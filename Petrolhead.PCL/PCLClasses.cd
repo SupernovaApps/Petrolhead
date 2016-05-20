@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Petrolhead.CoreApp" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIQAAAACAEAAAEAAAAQAAAACABAAQAAA=</HashCode>
+      <FileName>CoreApp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.CorePCLException" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CorePCLException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.DialogHelperException" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DialogHelperException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ExpenseValidator" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ExpenseValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.DialogButton" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>IDialogHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.PetrolheadUserInterfaceException" Collapsed="true">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PetrolheadUserInterfaceException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.RefuelValidator" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>RefuelValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ValidationException" Collapsed="true">
+    <Position X="8" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ValidationException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ValidatorBase&lt;T&gt;" Collapsed="true">
+    <Position X="2" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ValidatorBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Petrolhead.Models.Component" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIBEAACAgAAAEEABAABQAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Component.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.Models.Expense" Collapsed="true">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICIBCAECAgAAAEAABAABQAAAAAAAAAgAACEAAAAgA=</HashCode>
+      <FileName>Models\Expense.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.Models.FuelStation" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAJAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Models\FuelStation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.Models.Refuel" Collapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Models\Refuel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.Models.Reminder" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Reminder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.Models.Repair" Collapsed="true">
+    <Position X="0.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Repair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.Models.Vehicle" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAgCYAAACAAgUAIEAgBEABQCSAIAZAgQAwgYEiAAAIA=</HashCode>
+      <FileName>Models\Vehicle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ViewModels.VehicleViewModel" Collapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\VehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.RepairValidator" Collapsed="true">
+    <Position X="1.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>RepairValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.VehicleValidator" Collapsed="true">
+    <Position X="3.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>VehicleValidator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.DataStore" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQIEAAAAAAAACAACAgAAAAACAAAAAgBABAAAA=</HashCode>
+      <FileName>DataStore.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Petrolhead.IDialogHelper">
+    <Position X="10.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IDialogHelper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Petrolhead.IValidator&lt;T&gt;">
+    <Position X="12.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>IValidator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Petrolhead.IAuthenticator" Collapsed="true">
+    <Position X="14" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>IAuthenticator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

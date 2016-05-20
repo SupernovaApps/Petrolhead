@@ -1,8 +1,8 @@
-using Petrolhead.UWP.ViewModels;
+using Petrolhead.ViewModels;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Controls;
 
-namespace Petrolhead.UWP.Views
+namespace Petrolhead.Views
 {
     public sealed partial class DetailPage : Page
     {

@@ -7,7 +7,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Petrolhead.UWP.Views
+namespace Petrolhead.Views
 {
     public sealed partial class Shell : Page
     {

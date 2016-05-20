@@ -6,7 +6,7 @@ using Template10.Controls;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Petrolhead.UWP.Views
+namespace Petrolhead.Views
 {
     public sealed partial class Busy : UserControl
     {

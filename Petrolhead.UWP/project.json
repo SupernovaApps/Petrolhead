@@ -1,13 +1,15 @@
 ﻿{
   "dependencies": {
-    "HockeySDK.UWP": "3.2.1-build60573",
-    "LiveSDK": "5.6.3",
+    "HockeySDK.UWP": "4.0.0",
+    "Microsoft.Azure.Mobile.Client": "2.0.1",
     "Microsoft.Azure.Mobile.Client.SQLiteStore": "2.0.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
     "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
-    "MvvmLight": "5.2.0",
+    "MvvmLight": "5.3.0",
     "Newtonsoft.Json": "8.0.3",
-    "Template10": "1.1.*"
+    "NotificationsExtensions.Win10": "14295.0.1",
+    "SQLitePCL": "3.8.7.2",
+    "Template10": "1.1.11"
   },
   "frameworks": {
     "uap10.0": {}

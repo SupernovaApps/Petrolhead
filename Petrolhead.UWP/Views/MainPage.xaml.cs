@@ -1,11 +1,11 @@
 using System;
-using Petrolhead.UWP.ViewModels;
+using Petrolhead.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 
-namespace Petrolhead.UWP.Views
+namespace Petrolhead.Views
 {
     public sealed partial class MainPage : Page
     {

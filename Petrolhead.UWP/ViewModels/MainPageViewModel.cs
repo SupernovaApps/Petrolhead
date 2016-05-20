@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
+using Windows.ApplicationModel.Background;
 
-namespace Petrolhead.UWP.ViewModels
+namespace Petrolhead.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
@@ -16,8 +17,10 @@ namespace Petrolhead.UWP.ViewModels
             {
                 Value = "Designtime value";
             }
+
         }
 
+        
         string _Value = "Gas";
         public string Value { get { return _Value; } set { Set(ref _Value, value); } }
 
@@ -27,7 +30,35 @@ namespace Petrolhead.UWP.ViewModels
             {
                 Value = suspensionState[nameof(Value)]?.ToString();
             }
+            await RegisterBackgroundSyncTaskAsync();
             await Task.CompletedTask;
+        }
+
+        private async Task RegisterBackgroundSyncTaskAsync()
+        {
+            var taskRegistered = false;
+            var exampleTaskName = "SyncBackgroundTask";
+
+            foreach (var task in BackgroundTaskRegistration.AllTasks)
+            {
+                if (task.Value.Name == exampleTaskName)
+                {
+                    taskRegistered = true;
+                    break;
+                }
+            }
+
+            if (!taskRegistered)
+            {
+                var builder = new BackgroundTaskBuilder();
+                builder.Name = exampleTaskName;
+                builder.TaskEntryPoint = "Petrolhead.UWP.BackgroundTasks.SyncBackgroundTask";
+                builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+                TimeTrigger timeTrigger = new TimeTrigger(30, false);
+                builder.SetTrigger(timeTrigger);
+                builder.Register();
+            }
+
         }
 
         public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)

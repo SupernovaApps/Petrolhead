@@ -8,28 +8,14 @@ using System.Threading.Tasks;
 namespace Petrolhead.Models
 {
     /// <summary>
-    /// Client data model for expense objects
-    /// </summary>
+    /// Data model representing an expense
+    ///</summary>
     public class Expense : ObservableObject
     {
-        internal Expense()
-        {
+        
+       
 
-        }
-
-        public override string ToString()
-        {
-            return "";
-        }
-
-        public enum ExpenseType
-        {
-            Generic,
-            Maintenance,
-            Fuel
-        }
-
-        private string _id = default(string);
+        private string _id = Guid.NewGuid().ToString();
         public string Id { get { return _id; } set { Set(ref _id, value); } }
 
         private string _name = default(string);
@@ -38,22 +24,36 @@ namespace Petrolhead.Models
         private string _description = default(string);
         public string Description { get { return _description; } set { Set(ref _description, value); } }
 
-        private decimal _cost = default(decimal);
-        public decimal Cost { get { return _cost; } set { Set(ref _cost, value);
+        protected double _cost = default(double);
+        public virtual double Cost { get { return _cost; } set { Set(ref _cost, value);
                 HumanCost = value.ToString("C");
             } }
 
-        private ExpenseType _type = default(ExpenseType);
-        public ExpenseType Type { get { return _type; } set { Set(ref _type, value); HumanType = value.ToString(); } }
+        private string _humanCost = 0.00.ToString("C");
+        public string HumanCost { get { return _humanCost; } set { Set(ref _humanCost, value); } }
 
-        private string _humanType = default(string);
-        public string HumanType { get { return _humanType; } private set { Set(ref _humanType, value); } }
+        private long _mileage = default(long);
+        public long Mileage { get { return _mileage; } set { Set(ref _mileage, value); } }
 
-        private string _humanCost = default(string);
-        public string HumanCost { get { return _humanCost; } private set { Set(ref _humanCost, value); } }
+        private DateTimeOffset? _transactionDate = default(DateTimeOffset?);
+        public DateTimeOffset? TransactionDate
+        {
+            get
+            {
+                return _transactionDate;
+            }
+            set
+            {
+                Set(ref _transactionDate, value);
 
-        private decimal _mileage
+                if (!value.HasValue)
+                    HumanTransactionDate = 0.ToString("C");
+                else
+                    HumanTransactionDate = value.Value.ToString("C");
+            }
+        }
 
-
+        private string _humanTransactionDate = default(string);
+        public string HumanTransactionDate { get { return _humanTransactionDate; } private set { Set(ref _humanTransactionDate, value); } }
     }
 }

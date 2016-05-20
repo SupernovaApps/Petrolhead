@@ -5,7 +5,7 @@ using Template10.Mvvm;
 using Template10.Services.SettingsService;
 using Windows.UI.Xaml;
 
-namespace Petrolhead.UWP.ViewModels
+namespace Petrolhead.ViewModels
 {
     public class SettingsPageViewModel : ViewModelBase
     {

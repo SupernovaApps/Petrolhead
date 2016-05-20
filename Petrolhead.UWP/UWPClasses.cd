@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Petrolhead.App" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Petrolhead.DialogHelper" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DialogHelper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Petrolhead.Services.SettingsServices.SettingsService" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAIAAAAEAAQAAgAAAAAAA=</HashCode>
+      <FileName>Services\SettingsServices\SettingsService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ViewModels.DetailPageViewModel" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAABAAAAAAAAAAAAAAQAAAAAAgAAACAAA=</HashCode>
+      <FileName>ViewModels\DetailPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ViewModels.MainPageViewModel" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAAAAAAABEAAACACAAAAAAAQAAAAAAgAAACAAA=</HashCode>
+      <FileName>ViewModels\MainPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ViewModels.SettingsPageViewModel" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SettingsPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ViewModels.SettingsPartViewModel" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAIAgAAAAAAAQAAAAAAAAAQAAAAEAAA=</HashCode>
+      <FileName>ViewModels\SettingsPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.ViewModels.AboutPartViewModel" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAEQAAAAAAAAAACAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SettingsPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Petrolhead.Views.Busy" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAABAAABAAAAAAgAAAAQAAAAAAAA=</HashCode>
+      <FileName>Views\Busy.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Petrolhead.Views.DetailPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\DetailPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Petrolhead.Views.MainPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\MainPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Petrolhead.Views.SettingsPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\SettingsPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Petrolhead.Views.Shell" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Views\Shell.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Petrolhead.Views.Splash" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Views\Splash.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

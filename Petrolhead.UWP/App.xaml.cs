@@ -1,27 +1,29 @@
 using Windows.UI.Xaml;
 using System.Threading.Tasks;
-using Petrolhead.UWP.Services.SettingsServices;
+using Petrolhead.Services.SettingsServices;
 using Windows.ApplicationModel.Activation;
 using Template10.Controls;
 using Template10.Common;
 using System;
 using System.Linq;
 using Windows.UI.Xaml.Data;
-using Windows.Networking.Connectivity;
-using Petrolhead.UWP.Helpers;
+using Microsoft.WindowsAzure.MobileServices;
+using Windows.Security.Credentials;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using NotificationsExtensions.Toasts;
 
-namespace Petrolhead.UWP
+namespace Petrolhead
 {
     /// Documentation on APIs used in this page:
     /// https://github.com/Windows-XAML/Template10/wiki
 
-        
     [Bindable]
-    sealed partial class App : Template10.Common.BootStrapper
-    { 
+    sealed partial class App : Template10.Common.BootStrapper, IAuthenticator
+    {
         public App()
         {
-            Microsoft.HockeyApp.HockeyClient.Current.Configure("ee9ddc0ac4a04e828d7586b09854062f");
+           
             InitializeComponent();
             SplashFactory = (e) => new Views.Splash(e);
 
@@ -35,7 +37,79 @@ namespace Petrolhead.UWP
             #endregion
         }
 
-       
+        public bool IsAuthenticated
+        {
+            get
+            {
+                return (User != null);
+            }
+        }
+
+        public MobileServiceUser User
+        {
+            get; set;
+        }
+
+        public async Task<bool> AuthenticateAsync()
+        {
+            bool success = false;
+
+            try
+            {
+                PasswordVault vault = new PasswordVault();
+                PasswordCredential credential = null;
+                var store = await DataStore.Current();
+
+                try
+                {
+                    credential = vault.FindAllByResource(MobileServiceAuthenticationProvider.MicrosoftAccount.ToString()).FirstOrDefault();
+                }
+                catch (COMException)
+                {
+                    Debug.WriteLine("Ignoring error");
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("Ignoring error");
+                }
+
+                if (credential != null)
+                {
+                    store.CloudService.CurrentUser = new MobileServiceUser(credential.UserName);
+                    credential.RetrievePassword();
+                    store.CloudService.CurrentUser.MobileServiceAuthenticationToken = credential.Password;
+
+                    if (store.CloudService.IsTokenExpired())
+                    {
+                        User = await store.CloudService.LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount);
+                    }
+                    else
+                    {
+                        User = store.CloudService.CurrentUser;
+                    }
+                }
+                else
+                {
+                    User = await store.CloudService.LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount);
+                }
+
+                ToastContent content = new ToastContent()
+                {
+
+                };
+            }
+            catch (InvalidOperationException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return success;
+        }
+
         public override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
             if (Window.Current.Content as ModalDialog == null)
@@ -57,9 +131,9 @@ namespace Petrolhead.UWP
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             // long-running startup tasks go here
-            Data.VehicleManager.Initialize(new Authenticator());
+            CoreApp.Initialize(DialogHelper.Current, this);
             await Task.Delay(1000);
-            await Data.VehicleManager.Current.AuthenticateAsync();
+
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
         }
