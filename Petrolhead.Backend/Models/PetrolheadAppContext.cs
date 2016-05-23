@@ -37,5 +37,6 @@ namespace Petrolhead.Backend.Models
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Refuel> Refuels { get; set; }
         public DbSet<Repair> Repairs { get; set; }
+        public DbSet<Component> Components { get; set; }
     }
 }

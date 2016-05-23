@@ -45,7 +45,7 @@ namespace Petrolhead.Backend.Controllers
         }
 
         // PATCH tables/Vehicle/48D68C86-6EA6-4C25-AA33-223FC9A27959
-        public Task<VehicleDTO> PatchVehicleDTO(string id, Delta<VehicleDTO> patch)
+        public async Task<VehicleDTO> PatchVehicleDTO(string id, Delta<VehicleDTO> patch)
         {
             Vehicle currentVehicle = context.Vehicles.Include("Expenses")
                 .Include("Repairs")
@@ -91,19 +91,113 @@ namespace Petrolhead.Backend.Controllers
 
                     foreach (var expenseDTO in updatedExpenses)
                     {
+                        var obj = expenseDTO;
                         Expense existingItem = this.context.Expenses.FirstOrDefault(v => (v.Id == expenseDTO.Id));
 
                         if (expenseDTO.CreatedAt == null)
-                            expenseDTO.CreatedAt = existingItem.CreatedAt ?? DateTimeOffset.Now;
-                         
-                        existingItem = Mapper.Map<ExpenseDTO, Expense>(expenseDTO);
+                            obj.CreatedAt = existingItem?.CreatedAt ?? DateTimeOffset.Now;
+
+                        existingItem = Mapper.Map<ExpenseDTO, Expense>(obj);
                         existingItem.Vehicle = currentVehicle;
                         currentVehicle.Expenses.Add(existingItem);
                     }
                 }
-            }
 
-            return UpdateAsync(id, patch);
+                if (patch.GetChangedPropertyNames().Contains("Refuels"))
+                {
+                    for (int i = 0; i < currentVehicle.Refuels.Count && updatedEntity.Refuels != null; i++)
+                    {
+                        RefuelDTO refuelDTO = updatedEntity.Refuels.FirstOrDefault(x => (x.Id == currentVehicle.Refuels.ElementAt(i).Id));
+
+                        if (refuelDTO != null)
+                        {
+                            this.context.Refuels.Remove(currentVehicle.Refuels.ElementAt(i));
+                        }
+
+                        Mapper.Map<VehicleDTO, Vehicle>(updatedEntity, currentVehicle);
+                        updatedRefuels = updatedEntity.Refuels;
+
+                    }
+                }
+                else
+                {
+                    VehicleDTO vehicleDTOUpdated = Mapper.Map<Vehicle, VehicleDTO>(currentVehicle);
+                    patch.Patch(vehicleDTOUpdated);
+                    Mapper.Map<VehicleDTO, Vehicle>(vehicleDTOUpdated, currentVehicle);
+                    updatedRefuels = updatedEntity.Refuels;
+
+                }
+
+                if (updatedRefuels != null)
+                {
+                    currentVehicle.Refuels = new List<Refuel>();
+
+                    foreach (var refuelDTO in updatedEntity.Refuels)
+                    {
+                        RefuelDTO obj = refuelDTO;
+                        Refuel existingItem = context.Refuels.FirstOrDefault(r => r.Id == refuelDTO.Id);
+
+                        
+                        if (refuelDTO.CreatedAt == null)
+                            obj.CreatedAt = existingItem?.CreatedAt ?? DateTimeOffset.Now;
+
+                        existingItem = Mapper.Map<RefuelDTO, Refuel>(obj);
+                        existingItem.Location = Mapper.Map<FuelStationDTO, FuelStation>(obj.Location);
+                        existingItem.Vehicle = currentVehicle;
+                        currentVehicle.Refuels.Add(existingItem);
+
+                    }
+                }
+
+                
+                if (patch.GetChangedPropertyNames().Contains("Repairs"))
+                {
+                    for (int i = 0; i < currentVehicle.Repairs.Count && updatedEntity.Repairs != null; i++)
+                    {
+                        RepairDTO repairDTO = updatedEntity.Repairs.FirstOrDefault(rp => rp.Id == currentVehicle.Repairs.ElementAt(i).Id);
+
+                        if (repairDTO != null)
+                        {
+                            this.context.Repairs.Remove(currentVehicle.Repairs.ElementAt(i));
+                        }
+                        Mapper.Map<VehicleDTO, Vehicle>(updatedEntity, currentVehicle);
+                        updatedRepairs = updatedEntity.Repairs;
+                    }
+                }
+                else
+                {
+                    VehicleDTO vehicleDTOUpdated = Mapper.Map<Vehicle, VehicleDTO>(currentVehicle);
+                    patch.Patch(vehicleDTOUpdated);
+                    Mapper.Map<VehicleDTO, Vehicle>(vehicleDTOUpdated, currentVehicle);
+                    updatedRepairs = updatedEntity.Repairs;
+                }
+
+                if (updatedRepairs != null)
+                {
+                    currentVehicle.Repairs = new List<Repair>();
+
+                    var components = new List<Component>();
+                    foreach (var repairDTO in updatedEntity.Repairs)
+                    {
+                        var obj = repairDTO;
+                        Repair existingItem = context.Repairs.FirstOrDefault(rp => rp.Id == repairDTO.Id);
+                        if (obj.CreatedAt == null)
+                            obj.CreatedAt = existingItem?.CreatedAt ?? DateTimeOffset.Now;
+                        existingItem = Mapper.Map<RepairDTO, Repair>(obj);
+                        existingItem.Vehicle = currentVehicle;
+                        currentVehicle.Repairs.Add(existingItem);
+
+                    
+                        
+
+                        
+                    }
+                }
+            }
+            await context.SaveChangesAsync();
+
+            var result = Mapper.Map<Vehicle, VehicleDTO>(currentVehicle);
+            return result;
         }
 
         // POST tables/Vehicle
