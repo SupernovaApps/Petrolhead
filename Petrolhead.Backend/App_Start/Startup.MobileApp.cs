@@ -10,6 +10,7 @@ using Microsoft.Azure.Mobile.Server.Config;
 using Owin;
 using AutoMapper;
 using Petrolhead.Backend.DataObjects;
+using Petrolhead.Backend.Models;
 
 namespace Petrolhead.Backend
 {
@@ -51,7 +52,7 @@ namespace Petrolhead.Backend
 
             });
             // Use Entity Framework Code First to create database tables based on your DbContext
-            // Database.SetInitializer(new MobileServiceInitializer());
+            Database.SetInitializer(new PetrolheadInitializer());
 
             MobileAppSettingsDictionary settings = config.GetMobileAppSettingsProvider().GetMobileAppSettings();
 
@@ -72,6 +73,109 @@ namespace Petrolhead.Backend
         }
     }
 
+    public sealed class PetrolheadInitializer : DropCreateDatabaseIfModelChanges<PetrolheadAppContext>
+    {
+        protected override void Seed(PetrolheadAppContext context)
+        {
+            var vehicle = new Vehicle()
+            {
+                Name = "Test",
+                UserID = "abc",
+                Total = 0,
+                Description = "Lorem ipsum",
+                Manufacturer = "SomeCompany",
+                Model = "SomeCar",
+                ModelIdentifier = "200XL",
+                NextWarrantDate = DateTime.Today,
+                NextRegoRenewal = DateTime.Today,
+                BudgetMax = 2000,
+                IsOverBudget = false,
+                Id = Guid.Empty.ToString(),
+                HumanTotal = "$0.00",
+
+            };
+
+
+            var expenses = new List<Expense>()
+            {
+                new Expense()
+                {
+                    Name = "Expense",
+                    Cost = 0,
+                    HumanCost = "$0.00",
+                    Description = "Lorem ipsum",
+                    TransactionDate = DateTime.Today,
+                    HumanTransactionDate = DateTime.Today.ToShortDateString(),
+                    Mileage = 2000,
+                    Vehicle = vehicle,
+                    Id = Guid.NewGuid().ToString()
+                }
+            };
+            vehicle.Expenses = expenses;
+            context.Expenses.AddRange(expenses);
+
+            List<Refuel> refuels = new List<Refuel>()
+            {
+                new Refuel()
+                {
+                    Name = "Expense",
+                    Cost = 0,
+                    HumanCost = "$0.00",
+                    Description = "Lorem ipsum",
+                    TransactionDate = DateTime.Today,
+                    HumanTransactionDate = DateTime.Today.ToShortDateString(),
+                    Mileage = 2000,
+                    Vehicle = vehicle,
+                    Id = Guid.NewGuid().ToString(),
+                    
+                }
+            };
+
+            var fuelStation = new FuelStation()
+            {
+                Location = "Auckchurch Z",
+            };
+            refuels[0].Location = fuelStation;
+
+            vehicle.Refuels = refuels;
+            context.Refuels.AddRange(refuels);
+
+            List<Repair> repairs = new List<Repair>()
+            {
+                new Repair()
+                {
+                     Name = "Expense",
+                    Cost = 0,
+                    HumanCost = "$0.00",
+                    Description = "Lorem ipsum",
+                    TransactionDate = DateTime.Today,
+                    HumanTransactionDate = DateTime.Today.ToShortDateString(),
+                    Mileage = 2000,
+                    Vehicle = vehicle,
+                    Id = Guid.NewGuid().ToString(),
+                    
+                }
+            };
+
+            List<Component> components = new List<Component>()
+                    {
+                        new Component()
+                        {
+                            Name = "Engine",
+                            Expense = expenses[0],
+                            Cost = 0,
+                            Description = "Lorem ipsum",
+                            DateRepaired = DateTimeOffset.Now,
+                            HumanCost = "$0.00"
+                        }
+                    };
+            context.Components.AddRange(components);
+            repairs[0].Components = components;
+
+            context.Repairs.AddRange(repairs);
+            base.Seed(context);
+        }
+    }
    
 }
 

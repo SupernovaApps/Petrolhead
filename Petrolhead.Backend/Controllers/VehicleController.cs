@@ -176,15 +176,30 @@ namespace Petrolhead.Backend.Controllers
                 {
                     currentVehicle.Repairs = new List<Repair>();
 
-                    var components = new List<Component>();
+                    
                     foreach (var repairDTO in updatedEntity.Repairs)
                     {
+                        var components = new List<Component>();
                         var obj = repairDTO;
                         Repair existingItem = context.Repairs.FirstOrDefault(rp => rp.Id == repairDTO.Id);
                         if (obj.CreatedAt == null)
                             obj.CreatedAt = existingItem?.CreatedAt ?? DateTimeOffset.Now;
                         existingItem = Mapper.Map<RepairDTO, Repair>(obj);
                         existingItem.Vehicle = currentVehicle;
+
+                        foreach (var component in obj.Components)
+                        {
+                            var comp = component;
+                            var existingComponent = this.context.Components.FirstOrDefault(cp => cp.Id == component.Id);
+
+                            if (comp.CreatedAt == null)
+                                comp.CreatedAt = existingComponent?.CreatedAt ?? DateTimeOffset.Now;
+
+                            existingComponent = Mapper.Map<ComponentDTO, Component>(comp);
+                            existingComponent.Expense = existingItem;
+                            components.Add(existingComponent);
+                        }
+                        existingItem.Components = components;
                         currentVehicle.Repairs.Add(existingItem);
 
                     
