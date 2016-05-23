@@ -3,6 +3,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Tables;
+using Petrolhead.Backend.DataObjects;
 
 namespace Petrolhead.Backend.Models
 {
@@ -32,6 +33,9 @@ namespace Petrolhead.Backend.Models
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
         }
 
-        public System.Data.Entity.DbSet<Petrolhead.Backend.DataObjects.VehicleDTO> VehicleDTOes { get; set; }
+        public System.Data.Entity.DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Refuel> Refuels { get; set; }
+        public DbSet<Repair> Repairs { get; set; }
     }
 }

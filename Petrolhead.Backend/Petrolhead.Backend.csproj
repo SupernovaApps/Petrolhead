@@ -227,6 +227,7 @@
     <Compile Include="Models\PetrolheadAppContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryableExpandAttribute.cs" />
+    <Compile Include="SimpleMappedEntityDomainManager.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
