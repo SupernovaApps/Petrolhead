@@ -21,7 +21,7 @@ namespace Petrolhead
             {
                 if (string.IsNullOrWhiteSpace(item.Name))
                 {
-                    await DialogHelper.ShowDialogAsync("Sorry, but every vehicle needs a valid name. Otherwise, there's no way for you to tell them apart!", "Invalid Data");
+                    DialogHelper.ShowDialogAsync("Sorry, but every vehicle needs a valid name. Otherwise, there's no way for you to tell them apart!", "Invalid Data");
                 }
                 else
                 {

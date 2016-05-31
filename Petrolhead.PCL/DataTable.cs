@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
+using Petrolhead.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,67 @@ using System.Threading.Tasks;
 
 namespace Petrolhead
 {
+    public delegate void OnVehicleCreated(ref VehicleViewModel vm);
+
+    public sealed class VehicleManager : ObservableCollection<VehicleViewModel>
+    {
+        public VehicleManager(OnVehicleCreated onCreate)
+        {
+            this.OnVehicleCreated = onCreate;
+            Initialize();
+        }
+
+        public OnVehicleCreated OnVehicleCreated { get; private set; }
+
+        
+
+        private async void Initialize()
+        {
+            base.Clear();
+
+            await CoreApp.Current.Vehicles.RefreshAsync();
+
+            if (OnVehicleCreated == null)
+                throw new NullReferenceException("Must have OnVehicleCreated delegate!");
+
+            for (int i = 0; i < CoreApp.Current.Vehicles.Count; i++)
+            {
+                VehicleViewModel vm = CoreApp.Current.Vehicles[i];
+                OnVehicleCreated(ref vm);
+                base.Add(vm);
+            }
+        }
+
+        public new async void Add(VehicleViewModel item)
+        {
+            OnVehicleCreated(ref item);
+            base.Add(item);
+            await CoreApp.Current.Vehicles.CreateAsync(item);
+        }
+
+        public new async void Remove(VehicleViewModel item)
+        {
+            base.Remove(item);
+            await CoreApp.Current.Vehicles.DeleteAsync(item);
+        }
+
+        public async void Update(VehicleViewModel item)
+        {
+            var index = IndexOf(item);
+            this[index] = item;
+            await CoreApp.Current.Vehicles.UpdateAsync(item);
+        }
+
+        public async void SyncAsync()
+        {
+            Task t = new Task(async () => await CoreApp.Current.Vehicles.RefreshAsync());
+            t.Start();
+            while (!t.IsCompleted)
+                await Task.Delay(1000);
+            Initialize();
+        }
+    }
+
     public sealed class DataTable<T> : ObservableCollection<T>
     {
         private static IMobileServiceSyncTable<T> _controller = null;

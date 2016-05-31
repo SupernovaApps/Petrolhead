@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using Petrolhead.Models;
+using Petrolhead.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace Petrolhead
         /// Initializes the CoreApp object.
         /// </summary>
         /// <param name="dialogHelper">Object which implements IDialogHelper</param>
-        public static void Initialize(IDialogHelper dialogHelper, IAuthenticator authenticator)
+        public static void Initialize(IDialogHelper dialogHelper, IAuthenticator authenticator, OnVehicleCreated vCreated)
         {
             Current.DialogHelper = dialogHelper;
             Current.Authenticator = authenticator;
@@ -44,16 +45,29 @@ namespace Petrolhead
             Current.RefuelValidator = new RefuelValidator(dialogHelper);
             Current.RepairValidator = new RepairValidator(dialogHelper);
             Current.VehicleValidator = new VehicleValidator(dialogHelper);
+            Current.VehicleManager = new VehicleManager(vCreated);
+
+            IsInitialized = true;
         }
 
         /// <summary>
         /// The current DialogHelper 
         /// </summary>
+        /// 
+
+        
         public IDialogHelper DialogHelper { get; private set; }
+
+        public async void LoginAsync()
+        {
+            await Authenticator.AuthenticateAsync();
+        }
 
         internal IAuthenticator Authenticator { get; private set; }
 
-        public DataTable<Vehicle> Vehicles { get; set; } = new DataTable<Vehicle>();
+        public VehicleManager VehicleManager { get; set; }
+
+        internal DataTable<Vehicle> Vehicles { get; set; } = new DataTable<Vehicle>();
         /// <summary>
         /// Validate Expense objects
         /// </summary>

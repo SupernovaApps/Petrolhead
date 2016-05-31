@@ -30,13 +30,13 @@ namespace Petrolhead
             {
                 if (string.IsNullOrWhiteSpace(item.Name))
                 {
-                    await DialogHelper.ShowDialogAsync("Sorry, but I need a name in order to create an expense. Please add the name and try again.", "Invalid Data");
+                    DialogHelper.ShowDialogAsync("Sorry, but I need a name in order to create an expense. Please add the name and try again.", "Invalid Data");
                 }
                 else
                 {
                     if (!item.TransactionDate.HasValue)
                     {
-                        await DialogHelper.ShowDialogAsync("Sorry, but all expenses need a transaction date. Please add the transaction date and try again.", "Invalid Data");
+                        DialogHelper.ShowDialogAsync("Sorry, but all expenses need a transaction date. Please add the transaction date and try again.", "Invalid Data");
                     }
                     else
                     {

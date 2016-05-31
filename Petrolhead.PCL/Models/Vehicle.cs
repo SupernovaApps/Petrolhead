@@ -19,35 +19,6 @@ namespace Petrolhead.Models
             Id = Guid.NewGuid().ToString();
 
 
-            PropertyChanged += async (s, e) =>
-            {
-                if (e.PropertyName == "Expenses" || e.PropertyName == "Repairs" || e.PropertyName == "Refuels")
-                {
-                    await Task.Run(() =>
-                    {
-                        double total = 0.00;
-
-                       foreach (var item in Expenses)
-                        {
-                            total += item.Cost;
-                        }
-
-                       foreach (var item in Repairs)
-                        {
-                            total += item.Cost;
-                        }
-
-                       foreach (var item in Refuels)
-                        {
-                            total += item.Cost;
-                        }
-
-                        Total = total;
-                    });
-                }
-            };
-
-
         }
 
         
@@ -71,7 +42,7 @@ namespace Petrolhead.Models
         public string ModelIdentifier { get { return _modelId; } set { Set(ref _modelId, value); } }
 
         private double _total = default(double);
-        public double Total { get { return _total; } private set { Set(ref _total, value); HumanTotal = value.ToString("C"); } }
+        public double Total { get { return _total; } set { Set(ref _total, value); HumanTotal = value.ToString("C"); } }
 
         private string _humanTotal = default(string);
         public string HumanTotal { get { return _humanTotal; } private set { Set(ref _humanTotal, value); } }
@@ -104,7 +75,7 @@ namespace Petrolhead.Models
             {
                 Set(ref _expenses, value);
 
-                var total = 0.00;
+               
                 
          
                     

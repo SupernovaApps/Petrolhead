@@ -22,23 +22,7 @@ namespace Petrolhead.Models
             set
             {
                 Set(ref _components, value);
-                double lastKnownGoodValue = Cost;
-
-                try
-                {
-                    
-                    var c = 0.00;
-                    foreach (var component in value)
-                    {
-                        c += component.Cost;
-
-                    }
-                    Cost = c;
-                }
-                catch (Exception)
-                {
-                    Cost = lastKnownGoodValue;
-                }
+                
                 
             }
         }

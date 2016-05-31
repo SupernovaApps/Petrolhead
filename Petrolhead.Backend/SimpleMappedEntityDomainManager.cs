@@ -17,16 +17,16 @@ namespace Petrolhead.Backend
         where TData : class, ITableData
         where TModel : class, ITableData
     {
-        private Func<TModel, string> keyString;
+        
         public SimpleMappedEntityDomainManager(DbContext context,
             HttpRequestMessage request)
             : base(context, request)
         {
-            this.keyString = keyString;
+           
         }
         public override SingleResult<TData> Lookup(string id)
         {
-            return this.LookupEntity(p => this.keyString(p) == id);
+            return this.LookupEntity(p => p.Id == id);
         }
         public override Task<TData> UpdateAsync(string id, Delta<TData> patch)
         {
