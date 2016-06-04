@@ -7,15 +7,26 @@ using Android.Widget;
 using Android.OS;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Threading.Tasks;
-using Android.Support.V4.App;
 using Petrolhead.ViewModels;
+using Android.Locations;
+using System.Collections.Generic;
+using System.Linq;
+using Android.Support.V7.App;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
+using Messenger = GalaSoft.MvvmLight.Messaging.Messenger;
+using System.Threading;
+using GalaSoft.MvvmLight.Messaging;
+using Android.Support.V7.Widget;
 
-namespace Petrolhead.Android
+namespace Petrolhead
 {
-    [Activity(Label = "Petrolhead.Android", MainLauncher = true, Icon = "@drawable/icon")]
-    public class MainActivity : Activity, IAuthenticator, IDialogHelper
+    [Activity(Label = "Petrolhead", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme"
+        )]
+    public class MainActivity : AppCompatActivity, IAuthenticator, IDialogHelper
     {
         int count = 1;
+
+        private VehicleAdapter adapter;
 
         public bool IsAuthenticated
         {
@@ -31,6 +42,7 @@ namespace Petrolhead.Android
         }
 
         const int SignInFailedNotificationId = 1342;
+      
 
         public async Task<bool> AuthenticateAsync()
         {
@@ -52,11 +64,11 @@ namespace Petrolhead.Android
                     catch (Exception)
                     {
                         NotificationManager notificationMgr = (NotificationManager)GetSystemService(Context.NotificationService);
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                            .SetSmallIcon(Resource.Drawable.Icon)
-                            .SetContentTitle("Sign-in Failure")
-                            .SetContentText("Petrolhead couldn't sign you in.")
-                            .SetTicker("Whoops!");
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                        builder.SetContentTitle("Login Failure")
+                        .SetContentText("Petrolhead couldn't log you in...")
+                        .SetSmallIcon(Resource.Drawable.Icon)
+                        .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
                         Notification notification = builder.Build();
                         notificationMgr.Notify(SignInFailedNotificationId, notification);
                     }
@@ -75,7 +87,7 @@ namespace Petrolhead.Android
         {
             RunOnUiThread(() =>
             {
-                new AlertDialog.Builder(this)
+                new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetMessage(content)
                 .Show();
             });
@@ -85,7 +97,7 @@ namespace Petrolhead.Android
         {
             RunOnUiThread(() =>
             {
-                new AlertDialog.Builder(this)
+                new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetMessage(content)
                 .SetTitle(title)
                 .Show();
@@ -103,18 +115,19 @@ namespace Petrolhead.Android
         {
             var v = e.Vehicle;
 
-            if (e.Vehicle != null)
+            if (v != null)
             {
                 if (v.Vehicle.IsOverBudget)
                 {
                     NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
 
                     int notificationId = (v.Vehicle.Name + "OVERBDGT").GetHashCode();
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                        .SetContentTitle("Budget Warning")
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                        builder.SetContentTitle("Budget Warning")
                         .SetContentText(v.Vehicle.Name + " is over budget!")
-                        .SetTicker(v.Vehicle.Name + " is over budget!")
-                        .SetSmallIcon(Resource.Drawable.Icon);
+                        .SetTicker(v.Vehicle.Name + " needs attention!")
+                        .SetSmallIcon(Resource.Drawable.Icon)
+                        .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
                     Notification notification = builder.Build();
                     notificationMgr.Notify(notificationId, notification);
 
@@ -124,12 +137,46 @@ namespace Petrolhead.Android
 
         private void OnRegistrationOverdue(object sender, VehicleUpdateEventArgs e)
         {
-            
+            var v = e.Vehicle;
+
+            if (v != null)
+            {
+                NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
+
+                int notificationId = (v.Vehicle.Name + "REGODUE").GetHashCode();
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                    builder.SetContentTitle("Registration Overdue")
+                    .SetContentText(v.Vehicle.Name + " needs it's registration renewed!")
+                    .SetSmallIcon(Resource.Drawable.Icon)
+                    .SetTicker(v.Vehicle.Name + " needs attention!")
+                    .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
+                Notification notification = builder.Build();
+                notificationMgr.Notify(notificationId, notification);
+              
+            }
         }
 
+
+      
         private void OnWarrantOverdue(object sender, VehicleUpdateEventArgs e)
         {
-            
+            var v = e.Vehicle;
+
+            if (v != null)
+            {
+                NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
+
+                int notificationId = (v.Vehicle.Name + "WARRANTDUE").GetHashCode();
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                    builder.SetContentTitle("Warrant Reminder")
+                    .SetContentText(v.Vehicle.Name + " needs a warrant!")
+                    .SetSmallIcon(Resource.Drawable.Icon)
+                    .SetTicker(v.Vehicle.Name + " needs attention!")
+                    .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
+                Notification notification = builder.Build();
+                notificationMgr.Notify(notificationId, notification);
+
+            }
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -140,22 +187,109 @@ namespace Petrolhead.Android
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            CoreApp.Initialize(this, this, OnVehicleUpdated);
             
-            // Get our button from the layout resource,
-            // and attach an event to it
-            Button button = FindViewById<Button>(Resource.Id.MyButton);
 
-            button.Click += async delegate { await CoreApp.Current.VehicleValidator.ValidateAsync(new Models.Vehicle()); };
-            CoreApp.Current.LoginAsync();
-        }
+            CoreApp.Initialize(this, this, OnVehicleUpdated);
 
-        protected override void OnStart()
-        {
-            base.OnStart();
+            Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            
+
+            SetSupportActionBar(toolbar);
+           
+
+            var toolbarBottom = FindViewById<Toolbar>(Resource.Id.toolbar_bottom);
+            toolbarBottom.InflateMenu(Resource.Menu.edit);
+            
+            
+
+
+            toolbarBottom.MenuItemClick += (s, e) =>
+            {
+                if (adapter.SelectedVehicle == null)
+                {
+                    Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this)
+                    .SetTitle("No Vehicle Selected")
+                    .SetMessage("A vehicle must be selected in order to continue. Please select a vehicle and try again.");
+                    builder.Show();
+                    return;
+                    
+                }
+
+                if (e.Item.TitleFormatted.ToString() == "Edit...")
+                {
+                                     
+                    Intent intent = new Intent(this, typeof(VehicleInfoPage));
+                    StartActivity(intent);
+                }
+                else
+                {
+                    Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this)
+                    .SetTitle("Delete " + adapter.SelectedVehicle.Vehicle.Name + "?")
+                    .SetMessage("Once a vehicle has been deleted, there is no way to recover it. Are you quite sure you want to delete this vehicle?")
+                    .SetPositiveButton("I'm sure!", (sender, args) =>
+                    {
+                        adapter.Remove(adapter.SelectedVehicle);
+                    })
+                    .SetNegativeButton("Don't do it!", (sender, args) =>
+                    {
+                        // no implementation required.
+                    });
+                    builder.Show();
+                }
+            };
+
+
+
+
+            adapter = new VehicleAdapter(this, Resource.Layout.VehicleRow);
+            var listView = FindViewById<ListView>(Resource.Id.vehicleList);
+            listView.Adapter = adapter;
+
           
 
+            var vm = new VehicleViewModel(new Models.Vehicle()
+            {
+                Name = "Dad's Car",
+                Description = "Test",
+                BudgetMax = 200,
+            });
+
+            vm.AddExpense(new Models.Expense()
+            {
+                Name = "Minor",
+                Cost = 201,
+            });
+            adapter.Add(vm);
+            
         }
+
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            Messenger.Default.Unregister(this);
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.home, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.TitleFormatted.ToString() == "Add")
+            {
+                
+            }
+            else if (item.TitleFormatted.ToString() == "Settings")
+            {
+
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
+
     }
 }
 

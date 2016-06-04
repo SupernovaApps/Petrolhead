@@ -4,6 +4,7 @@ using Petrolhead.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Petrolhead
 {
     public delegate void OnVehicleCreated(ref VehicleViewModel vm);
 
-    public sealed class VehicleManager : ObservableCollection<VehicleViewModel>
+    public sealed class VehicleManager : ObservableCollection<VehicleViewModel>, INotifyPropertyChanged
     {
         public VehicleManager(OnVehicleCreated onCreate)
         {
@@ -21,9 +22,33 @@ namespace Petrolhead
             Initialize();
         }
 
-        public OnVehicleCreated OnVehicleCreated { get; private set; }
+        public new event PropertyChangedEventHandler PropertyChanged;
 
-        
+        public OnVehicleCreated OnVehicleCreated { get; set; }
+
+        private VehicleViewModel selectedVehicle = null;
+        public VehicleViewModel SelectedVehicle
+        {
+            get
+            {
+                return selectedVehicle;
+
+            }
+            set
+            {
+                selectedVehicle = value;
+                OnPropertyChanged(nameof(SelectedVehicle));
+            }
+        }
+
+        private void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
 
         private async void Initialize()
         {
@@ -31,8 +56,12 @@ namespace Petrolhead
 
             await CoreApp.Current.Vehicles.RefreshAsync();
 
+            
             if (OnVehicleCreated == null)
                 throw new NullReferenceException("Must have OnVehicleCreated delegate!");
+
+            if (CoreApp.Current.Vehicles.Count < 1)
+                return;
 
             for (int i = 0; i < CoreApp.Current.Vehicles.Count; i++)
             {
@@ -40,6 +69,11 @@ namespace Petrolhead
                 OnVehicleCreated(ref vm);
                 base.Add(vm);
             }
+
+            if (SelectedVehicle == null || !Contains(SelectedVehicle))
+                SelectedVehicle = this[0];
+                
+            
         }
 
         public new async void Add(VehicleViewModel item)
@@ -47,12 +81,17 @@ namespace Petrolhead
             OnVehicleCreated(ref item);
             base.Add(item);
             await CoreApp.Current.Vehicles.CreateAsync(item);
+            SelectedVehicle = item;
         }
 
         public new async void Remove(VehicleViewModel item)
         {
+            var index = this.IndexOf(item) - 1;
             base.Remove(item);
             await CoreApp.Current.Vehicles.DeleteAsync(item);
+            
+            SelectedVehicle = this.ElementAtOrDefault(index);
+            
         }
 
         public async void Update(VehicleViewModel item)
@@ -76,6 +115,7 @@ namespace Petrolhead
     {
         private static IMobileServiceSyncTable<T> _controller = null;
 
+       
         
         private async Task InitializeAsync()
         {

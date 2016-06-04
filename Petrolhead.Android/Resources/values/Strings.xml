@@ -2,4 +2,5 @@
 <resources>
     <string name="Hello">Hello World, Click Me!</string>
     <string name="ApplicationName">Petrolhead.Android</string>
+    <string name="chkVehicle_text">Vehicle</string>
 </resources>
