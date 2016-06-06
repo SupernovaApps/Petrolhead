@@ -22,6 +22,13 @@ namespace Petrolhead
             Initialize();
         }
 
+        public List<VehicleViewModel> GetVehicleList()
+        {
+            Initialize();
+            return this.ToList();
+        }
+
+        public bool IsSyncing { get; private set; }
         public new event PropertyChangedEventHandler PropertyChanged;
 
         public OnVehicleCreated OnVehicleCreated { get; set; }
@@ -60,9 +67,7 @@ namespace Petrolhead
             if (OnVehicleCreated == null)
                 throw new NullReferenceException("Must have OnVehicleCreated delegate!");
 
-            if (CoreApp.Current.Vehicles.Count < 1)
-                return;
-
+           
             for (int i = 0; i < CoreApp.Current.Vehicles.Count; i++)
             {
                 VehicleViewModel vm = CoreApp.Current.Vehicles[i];
@@ -70,44 +75,74 @@ namespace Petrolhead
                 base.Add(vm);
             }
 
-            if (SelectedVehicle == null || !Contains(SelectedVehicle))
+            if (Count > 0 && (SelectedVehicle == null || !Contains(SelectedVehicle)))
                 SelectedVehicle = this[0];
                 
             
         }
 
-        public new async void Add(VehicleViewModel item)
+        public new async Task Add(VehicleViewModel item)
         {
             OnVehicleCreated(ref item);
             base.Add(item);
-            await CoreApp.Current.Vehicles.CreateAsync(item);
+            
             SelectedVehicle = item;
+            await CoreApp.Current.Vehicles.CreateAsync(item);
         }
 
-        public new async void Remove(VehicleViewModel item)
+        public new async Task Remove(VehicleViewModel item)
         {
             var index = this.IndexOf(item) - 1;
             base.Remove(item);
-            await CoreApp.Current.Vehicles.DeleteAsync(item);
+            
             
             SelectedVehicle = this.ElementAtOrDefault(index);
-            
+             await CoreApp.Current.Vehicles.DeleteAsync(item); ;
         }
 
-        public async void Update(VehicleViewModel item)
+        public async Task Update(VehicleViewModel item)
         {
             var index = IndexOf(item);
             this[index] = item;
+            
             await CoreApp.Current.Vehicles.UpdateAsync(item);
         }
 
-        public async void SyncAsync()
+        public async Task ClearAll()
         {
-            Task t = new Task(async () => await CoreApp.Current.Vehicles.RefreshAsync());
-            t.Start();
-            while (!t.IsCompleted)
-                await Task.Delay(1000);
-            Initialize();
+           
+                base.Clear();
+                await CoreApp.Current.Vehicles.ClearAsync();
+           
+        }
+
+        private async Task Sync() { await CoreApp.Current.Vehicles.RefreshAsync(); }
+        public async Task SyncAsync()
+        {
+            IsSyncing = true;
+
+            
+            await Sync();
+
+
+
+            try
+            {
+                base.Clear();
+                for (int i = 0; i < CoreApp.Current.Vehicles.Count; i++)
+                {
+                    VehicleViewModel vm = CoreApp.Current.Vehicles[i];
+                    OnVehicleCreated(ref vm);
+                    base.Add(vm);
+                }
+            }
+            catch (Exception)
+            {
+                CoreApp.Current.DialogHelper.ShowDialog("An error occurred during sync - the local vehicle list could not be populated", "Whoops!");
+            }
+          
+            IsSyncing = false;
+           
         }
     }
 
@@ -141,19 +176,27 @@ namespace Petrolhead
         /// <returns></returns>
         public async Task CreateAsync(T row)
         {
-            // Add the item to the observable collection
-            Add(row);
+            try
+            {
+                // Add the item to the observable collection
+                Add(row);
 
-            // Add the item to the sync table
-            await InitializeAsync();
-            await _controller.InsertAsync(row);
+                // Add the item to the sync table
+                await InitializeAsync();
+                await _controller.InsertAsync(row);
+                
+            }
+            finally
+            {
+
+            }
         }
 
         public async Task ClearAsync()
         {
-            Clear();
+            base.Clear();
             await _controller.PurgeAsync(true);
-
+            
         }
 
         /// <summary>
@@ -163,18 +206,26 @@ namespace Petrolhead
         /// <returns></returns>
         public async Task UpdateAsync(T row)
         {
-            // Update the record in the observable collection
-            for (var idx = 0; idx < Count; idx++)
+            try
             {
-                if (Items[idx].Equals(row))
+                // Update the record in the observable collection
+                for (var idx = 0; idx < Count; idx++)
                 {
-                    Items[idx] = row;
+                    if (Items[idx].Equals(row))
+                    {
+                        Items[idx] = row;
+                    }
                 }
-            }
 
-            // Update the record in the sync table
-            await InitializeAsync();
-            await _controller.UpdateAsync(row);
+                // Update the record in the sync table
+                await InitializeAsync();
+                await _controller.UpdateAsync(row);
+                
+            }
+           finally
+            {
+
+            }
 
         }
 
@@ -193,6 +244,7 @@ namespace Petrolhead
             // Remove this item from the sync table
             await InitializeAsync();
             await _controller.DeleteAsync(row);
+            
 
         }
 
@@ -206,20 +258,33 @@ namespace Petrolhead
             await InitializeAsync();
 
             var store = await DataStore.Current();
-            if (store.IsAuthenticated)
+            try
             {
-                try
+                if (store.IsAuthenticated)
                 {
-                    // Do the Pushes
-                    await store.CloudService.SyncContext.PushAsync();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(string.Format("EXCEPTION:{0}", ex.Message));
-                }
+                    try
+                    {
+                        // Do the Pushes
+                        await store.CloudService.SyncContext.PushAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(string.Format("EXCEPTION:{0}", ex.Message));
+                    }
 
-                // Do the pulls
-                await _controller.PullAsync("tablequery", _controller.CreateQuery());
+                    // Do the pulls
+                    await _controller.PullAsync("tablequery", _controller.CreateQuery());
+
+                }
+                else
+                {
+                    
+                }
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                CoreApp.Current.DialogHelper.ShowDialog("Petrolhead couldn't access the remote server.");
+                
             }
         }
     }

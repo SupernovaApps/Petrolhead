@@ -168,7 +168,7 @@ namespace Petrolhead
         #endregion
 
         #region Dialog helper methods
-        public async void ShowDialogAsync(string content)
+        public async void ShowDialog(string content)
         {
             
 
@@ -200,7 +200,7 @@ namespace Petrolhead
             
         }
 
-        public async void ShowDialogAsync(string content, string title)
+        public async void ShowDialog(string content, string title)
         {
             
 

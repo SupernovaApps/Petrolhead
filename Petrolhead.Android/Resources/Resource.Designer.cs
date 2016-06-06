@@ -1816,10 +1816,13 @@ namespace Petrolhead
 			public const int ic_delete = 2130837583;
 			
 			// aapt resource value: 0x7f020050
-			public const int Icon = 2130837584;
+			public const int ic_save = 2130837584;
 			
 			// aapt resource value: 0x7f020051
-			public const int notification_template_icon_bg = 2130837585;
+			public const int Icon = 2130837585;
+			
+			// aapt resource value: 0x7f020052
+			public const int notification_template_icon_bg = 2130837586;
 			
 			static Drawable()
 			{
@@ -1912,8 +1915,8 @@ namespace Petrolhead
 			// aapt resource value: 0x7f06002d
 			public const int center_vertical = 2131099693;
 			
-			// aapt resource value: 0x7f060085
-			public const int checkVehicle = 2131099781;
+			// aapt resource value: 0x7f060089
+			public const int checkVehicle = 2131099785;
 			
 			// aapt resource value: 0x7f060052
 			public const int checkbox = 2131099730;
@@ -1944,6 +1947,12 @@ namespace Petrolhead
 			
 			// aapt resource value: 0x7f060040
 			public const int default_activity_button = 2131099712;
+			
+			// aapt resource value: 0x7f060088
+			public const int descriptionEntry = 2131099784;
+			
+			// aapt resource value: 0x7f060087
+			public const int descriptionEntryHeader = 2131099783;
 			
 			// aapt resource value: 0x7f06006a
 			public const int design_bottom_sheet = 2131099754;
@@ -2038,11 +2047,23 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060078
 			public const int media_actions = 2131099768;
 			
-			// aapt resource value: 0x7f060087
-			public const int menu_edit = 2131099783;
+			// aapt resource value: 0x7f06008e
+			public const int menu_add = 2131099790;
 			
-			// aapt resource value: 0x7f060088
-			public const int menu_home = 2131099784;
+			// aapt resource value: 0x7f06008d
+			public const int menu_clear = 2131099789;
+			
+			// aapt resource value: 0x7f06008c
+			public const int menu_delete = 2131099788;
+			
+			// aapt resource value: 0x7f06008b
+			public const int menu_edit = 2131099787;
+			
+			// aapt resource value: 0x7f060090
+			public const int menu_editor = 2131099792;
+			
+			// aapt resource value: 0x7f06008f
+			public const int menu_settings = 2131099791;
 			
 			// aapt resource value: 0x7f06001d
 			public const int middle = 2131099677;
@@ -2052,6 +2073,12 @@ namespace Petrolhead
 			
 			// aapt resource value: 0x7f060016
 			public const int multiply = 2131099670;
+			
+			// aapt resource value: 0x7f060086
+			public const int nameEntry = 2131099782;
+			
+			// aapt resource value: 0x7f060085
+			public const int nameEntryHeader = 2131099781;
 			
 			// aapt resource value: 0x7f06006d
 			public const int navigation_header_container = 2131099757;
@@ -2224,8 +2251,8 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060014
 			public const int useLogo = 2131099668;
 			
-			// aapt resource value: 0x7f060086
-			public const int vBudgetText = 2131099782;
+			// aapt resource value: 0x7f06008a
+			public const int vBudgetText = 2131099786;
 			
 			// aapt resource value: 0x7f060083
 			public const int vDetails_description = 2131099779;
@@ -2449,7 +2476,10 @@ namespace Petrolhead
 			public const int VehicleDetails = 2130903091;
 			
 			// aapt resource value: 0x7f030034
-			public const int VehicleRow = 2130903092;
+			public const int VehicleEditor = 2130903092;
+			
+			// aapt resource value: 0x7f030035
+			public const int VehicleRow = 2130903093;
 			
 			static Layout()
 			{
@@ -2469,6 +2499,9 @@ namespace Petrolhead
 			
 			// aapt resource value: 0x7f0c0001
 			public const int home = 2131492865;
+			
+			// aapt resource value: 0x7f0c0002
+			public const int vEditorMenu = 2131492866;
 			
 			static Menu()
 			{

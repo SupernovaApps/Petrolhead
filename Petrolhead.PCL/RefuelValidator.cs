@@ -17,13 +17,13 @@ namespace Petrolhead
             DialogHelper = dialog;
         } 
 
-        public override async Task<bool> ValidateAsync(Refuel item)
+        public override bool Validate(Refuel item)
         {
            try
             {
                 bool success = false;
 
-                if (!await CoreApp.Current.ExpenseValidator.ValidateAsync(item))
+                if (!CoreApp.Current.ExpenseValidator.Validate(item))
                 {
 
                 }

@@ -22,7 +22,7 @@ namespace Petrolhead
 
        
 
-        public override async Task<bool> ValidateAsync(Expense item)
+        public override bool Validate(Expense item)
         {
             bool isValid = false;
 
@@ -30,13 +30,13 @@ namespace Petrolhead
             {
                 if (string.IsNullOrWhiteSpace(item.Name))
                 {
-                    DialogHelper.ShowDialogAsync("Sorry, but I need a name in order to create an expense. Please add the name and try again.", "Invalid Data");
+                    DialogHelper.ShowDialog("Sorry, but I need a name in order to create an expense. Please add the name and try again.", "Invalid Data");
                 }
                 else
                 {
                     if (!item.TransactionDate.HasValue)
                     {
-                        DialogHelper.ShowDialogAsync("Sorry, but all expenses need a transaction date. Please add the transaction date and try again.", "Invalid Data");
+                        DialogHelper.ShowDialog("Sorry, but all expenses need a transaction date. Please add the transaction date and try again.", "Invalid Data");
                     }
                     else
                     {
@@ -50,7 +50,7 @@ namespace Petrolhead
                 throw new ValidationException("An error occurred during validation: " + ex.Message, ex);
             }
 
-            return (await Task.FromResult(isValid));
+            return isValid;
         }
     }
 }

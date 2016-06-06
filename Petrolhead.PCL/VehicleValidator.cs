@@ -14,14 +14,14 @@ namespace Petrolhead
             DialogHelper = dialogHelper;
         }
 
-        public override async Task<bool> ValidateAsync(Vehicle item)
+        public override bool Validate(Vehicle item)
         {
             bool success = false;
             try
             {
                 if (string.IsNullOrWhiteSpace(item.Name))
                 {
-                    DialogHelper.ShowDialogAsync("Sorry, but every vehicle needs a valid name. Otherwise, there's no way for you to tell them apart!", "Invalid Data");
+                    DialogHelper.ShowDialog("Sorry, but every vehicle needs a valid name. Otherwise, there's no way for you to tell them apart!", "Invalid Data");
                 }
                 else
                 {

@@ -19,7 +19,7 @@ namespace Petrolhead
         /// </summary>
         protected IDialogHelper DialogHelper { get; set; }
 
-        public abstract Task<bool> ValidateAsync(T item);
+        public abstract bool Validate(T item);
 
         
     }

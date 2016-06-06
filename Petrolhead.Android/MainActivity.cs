@@ -14,9 +14,11 @@ using System.Linq;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Messenger = GalaSoft.MvvmLight.Messaging.Messenger;
+using AlertDialog = Android.Support.V7.App.AlertDialog;
 using System.Threading;
 using GalaSoft.MvvmLight.Messaging;
 using Android.Support.V7.Widget;
+using static Android.Support.V7.Widget.Toolbar;
 
 namespace Petrolhead
 {
@@ -24,7 +26,7 @@ namespace Petrolhead
         )]
     public class MainActivity : AppCompatActivity, IAuthenticator, IDialogHelper
     {
-        int count = 1;
+        
 
         private VehicleAdapter adapter;
 
@@ -83,7 +85,7 @@ namespace Petrolhead
             return success;
         }
 
-        public void ShowDialogAsync(string content)
+        public void ShowDialog(string content)
         {
             RunOnUiThread(() =>
             {
@@ -93,7 +95,7 @@ namespace Petrolhead
             });
         }
 
-        public void ShowDialogAsync(string content, string title)
+        public void ShowDialog(string content, string title)
         {
             RunOnUiThread(() =>
             {
@@ -182,60 +184,59 @@ namespace Petrolhead
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+
             CurrentPlatform.Init();
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            
+
 
             CoreApp.Initialize(this, this, OnVehicleUpdated);
 
             Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            
+
 
             SetSupportActionBar(toolbar);
-           
+
 
             var toolbarBottom = FindViewById<Toolbar>(Resource.Id.toolbar_bottom);
+            toolbarBottom.Title = "Vehicle Options";
             toolbarBottom.InflateMenu(Resource.Menu.edit);
-            
-            
+           
 
 
+            
             toolbarBottom.MenuItemClick += (s, e) =>
             {
-                if (adapter.SelectedVehicle == null)
+               switch (e.Item.ItemId)
                 {
-                    Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this)
-                    .SetTitle("No Vehicle Selected")
-                    .SetMessage("A vehicle must be selected in order to continue. Please select a vehicle and try again.");
-                    builder.Show();
-                    return;
-                    
+                    case Resource.Id.menu_edit:
+                        {
+                            if (!IsSelected())
+                                return;
+                            else
+                            {
+                                Intent intent = new Intent(this, typeof(VehicleInfoPage));
+                                StartActivity(intent);
+                            }
+                            break;
+                        }
+                    case Resource.Id.menu_delete:
+                        {
+                            if (!IsSelected())
+                                return;
+                            else
+                                Delete();
+                            break;
+                        }
+                    case Resource.Id.menu_clear:
+                        Clear();
+                        break;
                 }
-
-                if (e.Item.TitleFormatted.ToString() == "Edit...")
-                {
-                                     
-                    Intent intent = new Intent(this, typeof(VehicleInfoPage));
-                    StartActivity(intent);
-                }
-                else
-                {
-                    Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this)
-                    .SetTitle("Delete " + adapter.SelectedVehicle.Vehicle.Name + "?")
-                    .SetMessage("Once a vehicle has been deleted, there is no way to recover it. Are you quite sure you want to delete this vehicle?")
-                    .SetPositiveButton("I'm sure!", (sender, args) =>
-                    {
-                        adapter.Remove(adapter.SelectedVehicle);
-                    })
-                    .SetNegativeButton("Don't do it!", (sender, args) =>
-                    {
-                        // no implementation required.
-                    });
-                    builder.Show();
-                }
+                
+                
             };
 
 
@@ -243,51 +244,174 @@ namespace Petrolhead
 
             adapter = new VehicleAdapter(this, Resource.Layout.VehicleRow);
             var listView = FindViewById<ListView>(Resource.Id.vehicleList);
+            
+
             listView.Adapter = adapter;
 
-          
-
-            var vm = new VehicleViewModel(new Models.Vehicle()
+            Messenger.Default.Register<NotificationMessage<VehicleViewModel>>(this, (message) =>
             {
-                Name = "Dad's Car",
-                Description = "Test",
-                BudgetMax = 200,
+                switch (message.Notification)
+                {
+                    case "Add-Vehicle":
+                        {
+                            AddItem(new VehicleWrapper(message.Content));
+                            break;
+                        }
+                }
             });
 
-            vm.AddExpense(new Models.Expense()
+
+
+            OnRefreshRequested();
+
+
+
+        }
+
+        public async void OnRefreshRequested()
+        {
+            await SyncAsync();
+                       
+            await RefreshDataFromTable();
+        }
+
+        private bool IsSelected()
+        {
+            if (adapter.SelectedVehicle == null)
             {
-                Name = "Minor",
-                Cost = 201,
-            });
-            adapter.Add(vm);
-            
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .SetMessage("You need to select a vehicle to continue. Please select a vehicle and try again.")
+                    .SetTitle("No Vehicle Selected");
+                builder.Show();
+                return false;
+                    
+            }
+            return true;
+        }
+
+        public void Delete()
+        {
+            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this)
+                   .SetTitle("Delete " + adapter.SelectedVehicle.Vehicle.Name + "?")
+                   .SetMessage("Once a vehicle has been deleted, there is no way to recover it. Are you quite sure you want to delete this vehicle?")
+                   .SetPositiveButton("I'm sure!", (sender, args) =>
+                   {
+                       RemoveItem(new VehicleWrapper(adapter.SelectedVehicle));
+                   })
+                   .SetNegativeButton("Don't do it!", (sender, args) =>
+                   {
+                        // no implementation required.
+                    });
+            builder.Show();
+        }
+
+        private async Task RefreshDataFromTable()
+        {
+            try
+            {
+                var vehicles = CoreApp.Current.VehicleManager.ToList();
+
+                adapter.Clear();
+
+                foreach (var vehicle in vehicles)
+                    adapter.Add(vehicle);
+                await Task.Delay(100);
+            }
+            catch (Exception)
+            {
+                ShowDialog("An error occurred while Petrolhead was populating the vehicle list.", "Data Access Error");
+            }
+
+        }
+
+        public void Clear()
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .SetTitle("Are you sure?")
+                .SetMessage("If you continue, Petrolhead will erase all your vehicle data. You won't be able to recover it! Do you still want to continue?")
+                .SetPositiveButton("Yes", async (s, e) =>
+                {
+                    try
+                    {
+                        adapter.Clear();
+                        await CoreApp.Current.VehicleManager.ClearAll();
+                    }
+                    catch
+                    {
+
+                    }
+                })
+                .SetNegativeButton("No", (s, e) => { });
+            builder.Show();
         }
 
 
+        public async Task SyncAsync()
+        {
+            await CoreApp.Current.VehicleManager.SyncAsync();
+        }
+
+        
+        public async void AddItem(VehicleWrapper vm)
+        {
+           
+                try
+                {
+                    adapter.Add(vm.Vehicle);
+                    await CoreApp.Current.VehicleManager.Add(vm.Vehicle);
+                    await SyncAsync();
+                    
+                }
+                catch (Exception ex)
+                {
+                    ShowDialog("Vehicle could not be added. Error code: " + ex.Message, "Whoops!");
+                }
+            
+        }
+
+       
+        public async void RemoveItem(VehicleWrapper vm)
+        {
+            try
+            {
+                await CoreApp.Current.VehicleManager.Remove(vm.Vehicle);
+                await SyncAsync();
+                adapter.Remove(vm.Vehicle);
+            }
+            catch
+            {
+
+            }
+        }
         protected override void OnStop()
         {
             base.OnStop();
-            Messenger.Default.Unregister(this);
+            
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.home, menu);
+            var addMenuItem = menu.FindItem(Resource.Id.menu_add);
+            
+
             return base.OnCreateOptionsMenu(menu);
         }
 
+
+
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if (item.TitleFormatted.ToString() == "Add")
+            if (item.ItemId == Resource.Id.menu_add)
             {
-                
-            }
-            else if (item.TitleFormatted.ToString() == "Settings")
-            {
-
+               
+                Intent intent = new Intent(this, typeof(VehicleCreatorActivity));
+                StartActivity(intent);
             }
             return base.OnOptionsItemSelected(item);
         }
+
+        
 
 
     }

@@ -10,7 +10,7 @@ namespace Petrolhead
         /// </summary>
         /// <param name="item">The item to be validated</param>
         /// <returns>Boolean (async)</returns>
-        Task<bool> ValidateAsync(T item);
+        bool Validate(T item);
         
     }
 

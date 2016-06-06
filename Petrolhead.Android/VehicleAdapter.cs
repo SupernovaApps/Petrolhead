@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using AlertDialog = Android.Support.V7.App.AlertDialog;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -13,10 +13,11 @@ using Petrolhead.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Java.IO;
 
 namespace Petrolhead
 {
-    public class VehicleWrapper : Java.Lang.Object
+    public class VehicleWrapper : Java.Lang.Object, ISerializable
     {
         public VehicleWrapper(VehicleViewModel vehicle)
         {
@@ -33,15 +34,19 @@ namespace Petrolhead
         int layoutResourceId;
 
         private List<VehicleViewModel> Vehicles { get { return vehicles; }
-        set { vehicles = value; CoreApp.Current.VehicleManager.Clear(); foreach (var vm in value) CoreApp.Current.VehicleManager.Add(vm); }
+        set { vehicles = value; }
         }
+
+        
 
         public VehicleAdapter(Activity activity, int layoutResourceId)
         {
             this.activity = activity;
             this.layoutResourceId = layoutResourceId;
-            vehicles = CoreApp.Current.VehicleManager.ToList();
+            
         }
+
+       
 
         public override int Count
         {
@@ -137,46 +142,22 @@ namespace Petrolhead
         public void Add(VehicleViewModel vm)
         {
             Vehicles.Add(vm);
-            UpdateTables();
-            SelectedVehicle = vm;
             NotifyDataSetChanged();
         }
 
         public void Remove(VehicleViewModel vm)
         {
-            var index = Vehicles.IndexOf(vm) - 1;
             Vehicles.Remove(vm);
-            UpdateTables();
-            SelectedVehicle = Vehicles.ElementAtOrDefault(index);
             NotifyDataSetChanged();
         }
 
         public void Clear()
         {
             Vehicles.Clear();
-            SelectedVehicle = null;
-            CoreApp.Current.VehicleManager.Clear();
             NotifyDataSetChanged();
         }
 
-        public void Sync()
-        {
-            CoreApp.Current.VehicleManager.SyncAsync();
-            Vehicles = CoreApp.Current.VehicleManager.ToList();
-            NotifyDataSetChanged();
-        }
-
-        private void UpdateTables()
-        {
-            CoreApp.Current.VehicleManager.Clear();
-
-            if (Vehicles.Count > 0)
-            foreach (var vm in Vehicles)
-            {
-                var obj = new VehicleViewModel(vm);
-                CoreApp.Current.VehicleManager.Add(obj);
-            }
-        }
+        
 
     }
 }

@@ -30,6 +30,7 @@ namespace Petrolhead.ViewModels
         public VehicleViewModel(Vehicle v)
         {
             // initialize the Vehicle property
+            v.Id = Guid.NewGuid().ToString();
             Vehicle = v;
 
             Vehicle.PropertyChanged += Vehicle_PropertyChanged;
