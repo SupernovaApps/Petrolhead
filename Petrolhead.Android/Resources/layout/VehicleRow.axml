@@ -7,7 +7,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/warningView"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp" />
     <CheckBox
         android:id="@+id/checkVehicle"
         android:layout_width="78.0dp"

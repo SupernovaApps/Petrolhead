@@ -276,7 +276,7 @@ namespace Petrolhead
                                 return;
                             else
                             {
-                                Intent intent = new Intent(this, typeof(VehicleInfoPage));
+                                Intent intent = new Intent(this, typeof(VehicleEditorActivity));
                                 StartActivity(intent);
                             }
                             break;
@@ -316,6 +316,11 @@ namespace Petrolhead
                             AddItem(new VehicleWrapper(message.Content));
                             break;
                         }
+                    case "Save-Edits":
+                        {
+                            UpdateVehicle(message.Content);
+                            break;
+                        }
                 }
             });
 
@@ -327,6 +332,21 @@ namespace Petrolhead
 
 
 
+        }
+
+        private async void UpdateVehicle(VehicleViewModel content)
+        {
+            try
+            {
+                await CoreApp.Current.VehicleManager.Update(content);
+
+                adapter.Remove(content);
+                adapter.Add(content);
+            }
+            catch
+            {
+
+            }
         }
 
         public async void OnRefreshRequested()

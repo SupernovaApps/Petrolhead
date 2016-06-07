@@ -44,21 +44,35 @@ namespace Petrolhead
 
             yofp.Click += (s, e) =>
             {
+                DateTime date = DateTime.Today;
+                if (vehicle.Vehicle.YearOfPurchase != null)
+                    date = DateTime.SpecifyKind(new DateTime(vehicle.Vehicle.YearOfPurchase.Value.Year, vehicle.Vehicle.YearOfPurchase.Value.Month, vehicle.Vehicle.YearOfPurchase.Value.Day), DateTimeKind.Local);
                 DatePickerFragment fragment = DatePickerFragment.NewInstance(delegate (DateTime dateTime)
                 {
-                    vehicle.Vehicle.YearOfPurchase = DateTime.SpecifyKind(new DateTime(dateTime.Year, 1, 1, 1, 0, 1), DateTimeKind.Local);
-                });
+                    DateTime dt = new DateTime(dateTime.Year, 1, dateTime.Day).AddMonths(-1);
+                    vehicle.Vehicle.YearOfPurchase = dt;
+                }, date);
                 fragment.Show(FragmentManager, "Set Purchase Year");
             };
 
             yofm.Click += (s, e) =>
             {
+                DateTime date = DateTime.Today;
+
+                if (vehicle.Vehicle.YearOfManufacture != null)
+                {
+                    DateTimeOffset offset = (DateTimeOffset)vehicle.Vehicle.YearOfManufacture;
+                    date = DateTime.SpecifyKind(new DateTime(offset.Year, offset.Month, offset.Day), DateTimeKind.Local);
+                }
+
                 DatePickerFragment fragment = DatePickerFragment.NewInstance(delegate (DateTime dateTime)
                 {
-                    vehicle.Vehicle.YearOfManufacture = DateTime.SpecifyKind(new DateTime(dateTime.Year, 1, 1, 1, 0, 1), DateTimeKind.Local);
-                });
+                    DateTime dt = new DateTime(dateTime.Year, 1, dateTime.Day).AddMonths(-1);
+                    vehicle.Vehicle.YearOfManufacture = dt;
+                }, date);
                 fragment.Show(FragmentManager, "Set Manufacture Year");
             };
+
 
             EditText descriptionEntry = FindViewById<EditText>(Resource.Id.descriptionEntry);
             descriptionEntry.TextChanged += (s, e) =>
@@ -81,20 +95,35 @@ namespace Petrolhead
             Button setWarrantDate = FindViewById<Button>(Resource.Id.setWarrantDate);
             setWarrantDate.Click += (s, e) =>
             {
+                DateTime date = DateTime.Today;
+                if (vehicle.Vehicle.NextWarrantDate != null)
+                {
+                    DateTimeOffset offset = (DateTimeOffset)vehicle.Vehicle.NextWarrantDate;
+                    date = DateTime.SpecifyKind(new DateTime(offset.Year, offset.Month, offset.Day), DateTimeKind.Local);
+                }
                 DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime dateTime)
                 {
-                    vehicle.Vehicle.NextWarrantDate = DateTime.SpecifyKind(dateTime, DateTimeKind.Local);
-                });
+                    vehicle.Vehicle.NextWarrantDate = dateTime.AddMonths(-1);
+
+                }, date);
                 frag.Show(FragmentManager, "Warrant");
             };
 
             Button setRegoDate = FindViewById<Button>(Resource.Id.setRegoDate);
             setRegoDate.Click += (s, e) =>
             {
+                DateTime date = DateTime.Today;
+                if (vehicle.Vehicle.NextRegoRenewal != null)
+                {
+                    DateTimeOffset offset = (DateTimeOffset)vehicle.Vehicle.NextRegoRenewal;
+                    date = DateTime.SpecifyKind(new DateTime(offset.Year, offset.Month, offset.Day), DateTimeKind.Local);
+                }
+
                 DatePickerFragment frag = DatePickerFragment.NewInstance(delegate (DateTime dateTime)
                 {
-                    vehicle.Vehicle.NextRegoRenewal = DateTime.SpecifyKind(dateTime, DateTimeKind.Local);
-                });
+                    vehicle.Vehicle.NextRegoRenewal = dateTime.AddMonths(-1);
+
+                }, date);
                 frag.Show(FragmentManager, "Rego");
             };
         }
@@ -170,5 +199,6 @@ namespace Petrolhead
             base.OnStart();
             vehicle = new VehicleViewModel(new Models.Vehicle());
         }
+
     }
 }

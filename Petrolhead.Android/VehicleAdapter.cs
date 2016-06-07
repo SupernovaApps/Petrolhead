@@ -138,7 +138,7 @@ namespace Petrolhead
             else
                 checkBox = row.FindViewById<CheckBox>(Resource.Id.checkVehicle);
 
-            checkBox.Text = currentItem.Vehicle.Name;
+                checkBox.Text = currentItem.Vehicle.Name + " " + currentItem.Vehicle.HumanTotal;
                 checkBox.Checked = false;
                 checkBox.Enabled = true;
                 checkBox.Tag = new VehicleWrapper(currentItem);
@@ -146,10 +146,7 @@ namespace Petrolhead
             return row;
         }
 
-        private void CurrentItem_RegistrationOverdue(object sender, VehicleUpdateEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public override long GetItemId(int position)
         {
@@ -159,12 +156,14 @@ namespace Petrolhead
         public void Add(VehicleViewModel vm)
         {
             Vehicles.Add(vm);
+            SelectedVehicle = vm;
             NotifyDataSetChanged();
         }
 
         public void Remove(VehicleViewModel vm)
         {
             Vehicles.Remove(vm);
+            SelectedVehicle = vm;
             NotifyDataSetChanged();
         }
 

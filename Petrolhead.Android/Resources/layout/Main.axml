@@ -25,5 +25,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/vehicleList"
         android:layout_below="@id/toolbar"
-        android:layout_above="@id/toolbar_bottom" />
+        android:layout_above="@id/toolbar_bottom"
+        android:choiceMode="singleChoice" />
 </RelativeLayout>

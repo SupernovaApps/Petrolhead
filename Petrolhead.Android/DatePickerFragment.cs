@@ -22,21 +22,23 @@ namespace Petrolhead
         // Initialize this value to prevent NullReferenceExceptions.
         Action<DateTime> _dateSelectedHandler = delegate { };
 
-        public static DatePickerFragment NewInstance(Action<DateTime> onDateSelected)
+
+        public DateTime StartDate { get; private set; } = DateTime.Today;
+        public static DatePickerFragment NewInstance(Action<DateTime> onDateSelected, DateTime? selectedDate = null)
         {
+
+            
+               
             DatePickerFragment frag = new DatePickerFragment();
             frag._dateSelectedHandler = onDateSelected;
+            if (selectedDate != null)
+                frag.StartDate = (DateTime)selectedDate;
             return frag;
         }
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
-            DateTime currently = DateTime.Now;
-            DatePickerDialog dialog = new DatePickerDialog(Activity,
-                                                           this,
-                                                           currently.Year,
-                                                           currently.Month,
-                                                           currently.Day);
+            DatePickerDialog dialog = new DatePickerDialog(Activity, this, StartDate.Year, StartDate.Month, StartDate.Day);
             return dialog;
         }
 
