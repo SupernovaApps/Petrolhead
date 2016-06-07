@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ImageView
+        android:src="@drawable/ic_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/warningView"
+        android:layout_alignParentRight="true" />
     <CheckBox
         android:id="@+id/checkVehicle"
         android:layout_width="78.0dp"
         android:layout_height="wrap_content"
-        android:text="@string/chkVehicle_text" />
-    <TextView
-        android:text="OVER BUDGET!"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/vBudgetText"
-        android:textColor="@android:color/holo_red_light"
-        android:layout_marginTop="7dp"
-        android:layout_marginLeft="5dp" />
-</LinearLayout>
+        android:text="@string/chkVehicle_text"
+        android:layout_toLeftOf="@id/warningView"
+        android:layout_alignParentLeft="true" />
+</RelativeLayout>

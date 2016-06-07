@@ -143,17 +143,42 @@ namespace Petrolhead
 
             if (v != null)
             {
-                NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
+                if (v.Vehicle.NextRegoRenewal == DateTime.Today)
+                {
+                    NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
 
-                int notificationId = (v.Vehicle.Name + "REGODUE").GetHashCode();
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                    int notificationId = (v.Vehicle.Id + "REGODUE").GetHashCode();
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
                     builder.SetContentTitle("Registration Overdue")
-                    .SetContentText(v.Vehicle.Name + " needs it's registration renewed!")
+                    .SetContentText(v.Vehicle.Name + "'s registration is invalid as of today!")
                     .SetSmallIcon(Resource.Drawable.Icon)
                     .SetTicker(v.Vehicle.Name + " needs attention!")
                     .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
-                Notification notification = builder.Build();
-                notificationMgr.Notify(notificationId, notification);
+
+                    if ((int)Android.OS.Build.VERSION.SdkInt >= 21)
+                        builder.SetCategory(Notification.CategoryReminder);
+
+                    Notification notification = builder.Build();
+                    notificationMgr.Notify(notificationId, notification);
+                }
+                else
+                {
+                    NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
+
+                    int notificationId = (v.Vehicle.Id + "REGODUE").GetHashCode();
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                    builder.SetContentTitle("Registration Overdue")
+                    .SetContentText(v.Vehicle.Name + "'s registration is invalid!")
+                    .SetSmallIcon(Resource.Drawable.Icon)
+                    .SetTicker(v.Vehicle.Name + " needs attention!")
+                    .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
+
+                    if ((int)Android.OS.Build.VERSION.SdkInt >= 21)
+                        builder.SetCategory(Notification.CategoryReminder);
+
+                    Notification notification = builder.Build();
+                    notificationMgr.Notify(notificationId, notification);
+                }
               
             }
         }
@@ -166,18 +191,47 @@ namespace Petrolhead
 
             if (v != null)
             {
-                NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
+                if (v.Vehicle.NextWarrantDate == DateTime.Today)
+                {
+                    NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
 
-                int notificationId = (v.Vehicle.Name + "WARRANTDUE").GetHashCode();
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-                    builder.SetContentTitle("Warrant Reminder")
-                    .SetContentText(v.Vehicle.Name + " needs a warrant!")
+                    int notificationId = (v.Vehicle.Id + "WARRANTDUE").GetHashCode();
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                    builder.SetContentTitle("Warrant Due")
+                    .SetContentText(v.Vehicle.Name + " is due for a warrant today!")
                     .SetSmallIcon(Resource.Drawable.Icon)
-                    .SetTicker(v.Vehicle.Name + " needs attention!")
+                    .SetTicker(v.Vehicle.Name + " needs a warrant!")
                     .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
-                Notification notification = builder.Build();
-                notificationMgr.Notify(notificationId, notification);
+                    
 
+                    if ((int)Android.OS.Build.VERSION.SdkInt >= 21)
+                    {
+                        builder.SetCategory(Notification.CategoryReminder);
+                    }
+                    Notification notification = builder.Build();
+                    notificationMgr.Notify(notificationId, notification);
+                }
+                else
+                {
+                    NotificationManager notificationMgr = (NotificationManager)GetSystemService(NotificationService);
+
+                    int notificationId = (v.Vehicle.Id + "WARRANTDUE").GetHashCode();
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                    builder.SetContentTitle("Warrant Overdue")
+                    .SetContentText("You missed the warrant date for " + v.Vehicle.Name + "!")
+                    .SetSmallIcon(Resource.Drawable.Icon)
+                    .SetTicker(v.Vehicle.Name + " needs a warrant!")
+                    .SetContentIntent(PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0));
+                    
+
+
+                    if ((int)Android.OS.Build.VERSION.SdkInt >= 21)
+                    {
+                        builder.SetCategory(Notification.CategoryReminder);
+                    }
+                    Notification notification = builder.Build();
+                    notificationMgr.Notify(notificationId, notification);
+                }
             }
         }
 
@@ -244,7 +298,8 @@ namespace Petrolhead
 
             adapter = new VehicleAdapter(this, Resource.Layout.VehicleRow);
             var listView = FindViewById<ListView>(Resource.Id.vehicleList);
-            
+
+            listView.ChoiceMode = ChoiceMode.Single;
 
             listView.Adapter = adapter;
 
@@ -259,6 +314,8 @@ namespace Petrolhead
                         }
                 }
             });
+
+            
 
 
 
@@ -288,6 +345,8 @@ namespace Petrolhead
             }
             return true;
         }
+
+   
 
         public void Delete()
         {
@@ -349,6 +408,7 @@ namespace Petrolhead
         public async Task SyncAsync()
         {
             await CoreApp.Current.VehicleManager.SyncAsync();
+
         }
 
         
@@ -374,9 +434,10 @@ namespace Petrolhead
         {
             try
             {
+                adapter.Remove(vm.Vehicle);
                 await CoreApp.Current.VehicleManager.Remove(vm.Vehicle);
                 await SyncAsync();
-                adapter.Remove(vm.Vehicle);
+                
             }
             catch
             {
@@ -386,6 +447,7 @@ namespace Petrolhead
         protected override void OnStop()
         {
             base.OnStop();
+            Messenger.Default.Unregister(this);
             
         }
 
@@ -407,6 +469,10 @@ namespace Petrolhead
                
                 Intent intent = new Intent(this, typeof(VehicleCreatorActivity));
                 StartActivity(intent);
+            }
+            else if (item.ItemId == Resource.Id.menu_sync)
+            {
+                OnRefreshRequested();
             }
             return base.OnOptionsItemSelected(item);
         }

@@ -9,4 +9,8 @@
   <item android:id="@+id/menu_settings"
         local:showAsAction="never"
         android:title="Settings" />
+  <item android:id="@+id/menu_sync"
+        android:icon="@drawable/ic_sync"
+        local:showAsAction="always"
+        android:title="Sync" />
 </menu>

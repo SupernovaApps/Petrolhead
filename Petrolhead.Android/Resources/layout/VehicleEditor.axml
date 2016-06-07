@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar">
         <RelativeLayout
+            android:id="@+id/editorView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -36,6 +37,60 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descriptionEntryHeader"
                 android:id="@+id/descriptionEntry" />
+            <TextView
+                android:text="Manufacturer:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/descriptionEntry"
+                android:id="@+id/manufacturerHeader" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/manufacturerHeader"
+                android:id="@+id/manufacturerEntry" />
+            <TextView
+                android:text="Model:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/manufacturerEntry"
+                android:id="@+id/modelHeader" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/modelHeader"
+                android:id="@+id/modelEntry" />
+            <Button
+                android:text="Set year of manufacture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/modelEntry"
+                android:id="@+id/setManufactureYear"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+            <Button
+                android:text="Set year of purchase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/setManufactureYear"
+                android:id="@+id/setPurchaseYear"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+            <Button
+                android:text="Set date of next warrant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/setPurchaseYear"
+                android:id="@+id/setWarrantDate"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+            <Button
+                android:text="Set date of next registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/setWarrantDate"
+                android:id="@+id/setRegoDate"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
         </RelativeLayout>
     </ScrollView>
     <android.support.v7.widget.Toolbar

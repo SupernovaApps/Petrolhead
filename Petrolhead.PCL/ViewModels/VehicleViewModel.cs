@@ -45,12 +45,16 @@ namespace Petrolhead.ViewModels
         {
             if (e.PropertyName == "BudgetMax")
                 UpdateTotal();
-
-            if (e.PropertyName == "NextWarrantDate")
+            else if (e.PropertyName == "NextWarrantDate")
                 VerifyDates();
-
-            if (e.PropertyName == "NextRegoRenewal")
+            else if (e.PropertyName == "NextRegoRenewal")
                 VerifyDates();
+        }
+
+        public void UpdateVehicle()
+        {
+            UpdateTotal();
+            VerifyDates();
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -67,12 +71,12 @@ namespace Petrolhead.ViewModels
         private void VerifyWarrantDate()
         {
             
-            if (DateTime.Today > Vehicle.NextWarrantDate)
+            if (DateTime.Today >= Vehicle.NextWarrantDate)
                 OnWarrantOverdue(new VehicleUpdateEventArgs(this));
           
         }
 
-        public void VerifyDates()
+        private void VerifyDates()
         {
             VerifyWarrantDate();
             VerifyRegistrationDate();
@@ -80,7 +84,7 @@ namespace Petrolhead.ViewModels
 
         private void VerifyRegistrationDate()
         {
-            if (DateTime.Today > Vehicle.NextRegoRenewal)
+            if (DateTime.Today >= Vehicle.NextRegoRenewal)
                 OnRegistrationOverdue(new VehicleUpdateEventArgs(this));
         }
 

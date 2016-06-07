@@ -25,7 +25,18 @@ namespace Petrolhead
                 }
                 else
                 {
+                    if (item.NextRegoRenewal == null)
+                    {
+                        DialogHelper.ShowDialog("Sorry, but you must provide a date when your vehicle's registration is up for renewal.", "Invalid Data");
 
+                    }
+                    else
+                    {
+                        if (item.NextRegoRenewal.Value < DateTime.Today)
+                        {
+                            DialogHelper.ShowDialog("The date of your next warrant cannot be earlier than the current date.", "Invalid Data");
+                        }
+                    }
                 }
 
                 return success;

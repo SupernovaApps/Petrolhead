@@ -83,26 +83,40 @@ namespace Petrolhead
             var row = convertView;
             var currentItem = this[position];
             CheckBox checkBox;
-            TextView overBudget;
+            ImageView warningView;
 
             if (row == null)
             {
-               
+
                 var inflater = activity.LayoutInflater;
                 row = inflater.Inflate(layoutResourceId, parent, false);
 
                 checkBox = row.FindViewById<CheckBox>(Resource.Id.checkVehicle);
-                overBudget = row.FindViewById<TextView>(Resource.Id.vBudgetText);
+                warningView = row.FindViewById<ImageView>(Resource.Id.warningView);
 
                 currentItem.TotalUpdated += (s, e) =>
                 {
-                    if (currentItem.Vehicle.IsOverBudget)
-                    {
-                        overBudget.Visibility = ViewStates.Visible;
-                    }
+                    if (currentItem.Vehicle.IsOverBudget || currentItem.Vehicle.NextRegoRenewal < DateTime.Today || currentItem.Vehicle.NextWarrantDate < DateTime.Today)
+                        warningView.Visibility = ViewStates.Visible;
                     else
-                        overBudget.Visibility = ViewStates.Invisible;
+                        warningView.Visibility = ViewStates.Invisible;
 
+                };
+
+                currentItem.RegistrationOverdue += (s, e) =>
+                {
+                    if (currentItem.Vehicle.IsOverBudget || currentItem.Vehicle.NextRegoRenewal < DateTime.Today || currentItem.Vehicle.NextWarrantDate < DateTime.Today)
+                        warningView.Visibility = ViewStates.Visible;
+                    else
+                        warningView.Visibility = ViewStates.Invisible;
+                };
+
+                currentItem.WarrantOverdue += (s, e) =>
+                {
+                    if (currentItem.Vehicle.IsOverBudget || currentItem.Vehicle.NextRegoRenewal <= DateTime.Today || currentItem.Vehicle.NextWarrantDate <= DateTime.Today)
+                        warningView.Visibility = ViewStates.Visible;
+                    else
+                        warningView.Visibility = ViewStates.Invisible;
                 };
 
                 checkBox.CheckedChange += (s, e) =>
@@ -115,12 +129,10 @@ namespace Petrolhead
                     }
                 };
 
-                if (currentItem.Vehicle.IsOverBudget)
-                {
-                    overBudget.Visibility = ViewStates.Visible;
-                }
+                if (currentItem.Vehicle.IsOverBudget || currentItem.Vehicle.NextRegoRenewal <= DateTime.Today || currentItem.Vehicle.NextWarrantDate <= DateTime.Today)
+                    warningView.Visibility = ViewStates.Visible;
                 else
-                    overBudget.Visibility = ViewStates.Invisible;
+                    warningView.Visibility = ViewStates.Invisible;
 
             }
             else
@@ -132,6 +144,11 @@ namespace Petrolhead
                 checkBox.Tag = new VehicleWrapper(currentItem);
 
             return row;
+        }
+
+        private void CurrentItem_RegistrationOverdue(object sender, VehicleUpdateEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public override long GetItemId(int position)

@@ -1819,10 +1819,16 @@ namespace Petrolhead
 			public const int ic_save = 2130837584;
 			
 			// aapt resource value: 0x7f020051
-			public const int Icon = 2130837585;
+			public const int ic_sync = 2130837585;
 			
 			// aapt resource value: 0x7f020052
-			public const int notification_template_icon_bg = 2130837586;
+			public const int ic_warning = 2130837586;
+			
+			// aapt resource value: 0x7f020053
+			public const int Icon = 2130837587;
+			
+			// aapt resource value: 0x7f020054
+			public const int notification_template_icon_bg = 2130837588;
 			
 			static Drawable()
 			{
@@ -1915,8 +1921,8 @@ namespace Petrolhead
 			// aapt resource value: 0x7f06002d
 			public const int center_vertical = 2131099693;
 			
-			// aapt resource value: 0x7f060089
-			public const int checkVehicle = 2131099785;
+			// aapt resource value: 0x7f060093
+			public const int checkVehicle = 2131099795;
 			
 			// aapt resource value: 0x7f060052
 			public const int checkbox = 2131099730;
@@ -1948,11 +1954,11 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060040
 			public const int default_activity_button = 2131099712;
 			
-			// aapt resource value: 0x7f060088
-			public const int descriptionEntry = 2131099784;
+			// aapt resource value: 0x7f060089
+			public const int descriptionEntry = 2131099785;
 			
-			// aapt resource value: 0x7f060087
-			public const int descriptionEntryHeader = 2131099783;
+			// aapt resource value: 0x7f060088
+			public const int descriptionEntryHeader = 2131099784;
 			
 			// aapt resource value: 0x7f06006a
 			public const int design_bottom_sheet = 2131099754;
@@ -1974,6 +1980,9 @@ namespace Petrolhead
 			
 			// aapt resource value: 0x7f06005c
 			public const int edit_query = 2131099740;
+			
+			// aapt resource value: 0x7f060085
+			public const int editorView = 2131099781;
 			
 			// aapt resource value: 0x7f06001c
 			public const int end = 2131099676;
@@ -2044,26 +2053,38 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060041
 			public const int list_item = 2131099713;
 			
+			// aapt resource value: 0x7f06008b
+			public const int manufacturerEntry = 2131099787;
+			
+			// aapt resource value: 0x7f06008a
+			public const int manufacturerHeader = 2131099786;
+			
 			// aapt resource value: 0x7f060078
 			public const int media_actions = 2131099768;
 			
-			// aapt resource value: 0x7f06008e
-			public const int menu_add = 2131099790;
+			// aapt resource value: 0x7f060097
+			public const int menu_add = 2131099799;
 			
-			// aapt resource value: 0x7f06008d
-			public const int menu_clear = 2131099789;
+			// aapt resource value: 0x7f06009b
+			public const int menu_cancel = 2131099803;
 			
-			// aapt resource value: 0x7f06008c
-			public const int menu_delete = 2131099788;
+			// aapt resource value: 0x7f060096
+			public const int menu_clear = 2131099798;
 			
-			// aapt resource value: 0x7f06008b
-			public const int menu_edit = 2131099787;
+			// aapt resource value: 0x7f060095
+			public const int menu_delete = 2131099797;
 			
-			// aapt resource value: 0x7f060090
-			public const int menu_editor = 2131099792;
+			// aapt resource value: 0x7f060094
+			public const int menu_edit = 2131099796;
 			
-			// aapt resource value: 0x7f06008f
-			public const int menu_settings = 2131099791;
+			// aapt resource value: 0x7f06009a
+			public const int menu_save = 2131099802;
+			
+			// aapt resource value: 0x7f060098
+			public const int menu_settings = 2131099800;
+			
+			// aapt resource value: 0x7f060099
+			public const int menu_sync = 2131099801;
 			
 			// aapt resource value: 0x7f06001d
 			public const int middle = 2131099677;
@@ -2071,14 +2092,20 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060037
 			public const int mini = 2131099703;
 			
+			// aapt resource value: 0x7f06008d
+			public const int modelEntry = 2131099789;
+			
+			// aapt resource value: 0x7f06008c
+			public const int modelHeader = 2131099788;
+			
 			// aapt resource value: 0x7f060016
 			public const int multiply = 2131099670;
 			
-			// aapt resource value: 0x7f060086
-			public const int nameEntry = 2131099782;
+			// aapt resource value: 0x7f060087
+			public const int nameEntry = 2131099783;
 			
-			// aapt resource value: 0x7f060085
-			public const int nameEntryHeader = 2131099781;
+			// aapt resource value: 0x7f060086
+			public const int nameEntryHeader = 2131099782;
 			
 			// aapt resource value: 0x7f06006d
 			public const int navigation_header_container = 2131099757;
@@ -2164,6 +2191,18 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060068
 			public const int select_dialog_listview = 2131099752;
 			
+			// aapt resource value: 0x7f06008e
+			public const int setManufactureYear = 2131099790;
+			
+			// aapt resource value: 0x7f06008f
+			public const int setPurchaseYear = 2131099791;
+			
+			// aapt resource value: 0x7f060091
+			public const int setRegoDate = 2131099793;
+			
+			// aapt resource value: 0x7f060090
+			public const int setWarrantDate = 2131099792;
+			
 			// aapt resource value: 0x7f060053
 			public const int shortcut = 2131099731;
 			
@@ -2233,8 +2272,8 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060072
 			public const int toolbar = 2131099762;
 			
-			// aapt resource value: 0x7f060074
-			public const int toolbar_bottom = 2131099764;
+			// aapt resource value: 0x7f060073
+			public const int toolbar_bottom = 2131099763;
 			
 			// aapt resource value: 0x7f060032
 			public const int top = 2131099698;
@@ -2251,20 +2290,20 @@ namespace Petrolhead
 			// aapt resource value: 0x7f060014
 			public const int useLogo = 2131099668;
 			
-			// aapt resource value: 0x7f06008a
-			public const int vBudgetText = 2131099786;
-			
 			// aapt resource value: 0x7f060083
 			public const int vDetails_description = 2131099779;
 			
 			// aapt resource value: 0x7f060082
 			public const int vDetails_descriptionHeader = 2131099778;
 			
-			// aapt resource value: 0x7f060073
-			public const int vehicleList = 2131099763;
+			// aapt resource value: 0x7f060074
+			public const int vehicleList = 2131099764;
 			
 			// aapt resource value: 0x7f06000a
 			public const int view_offset_helper = 2131099658;
+			
+			// aapt resource value: 0x7f060092
+			public const int warningView = 2131099794;
 			
 			// aapt resource value: 0x7f060022
 			public const int withText = 2131099682;

@@ -72,6 +72,7 @@ namespace Petrolhead
             {
                 VehicleViewModel vm = CoreApp.Current.Vehicles[i];
                 OnVehicleCreated(ref vm);
+                vm.UpdateVehicle();
                 base.Add(vm);
             }
 
@@ -85,7 +86,7 @@ namespace Petrolhead
         {
             OnVehicleCreated(ref item);
             base.Add(item);
-            
+            item.UpdateVehicle();
             SelectedVehicle = item;
             await CoreApp.Current.Vehicles.CreateAsync(item);
         }
@@ -104,7 +105,7 @@ namespace Petrolhead
         {
             var index = IndexOf(item);
             this[index] = item;
-            
+            item.UpdateVehicle();
             await CoreApp.Current.Vehicles.UpdateAsync(item);
         }
 
@@ -133,6 +134,7 @@ namespace Petrolhead
                 {
                     VehicleViewModel vm = CoreApp.Current.Vehicles[i];
                     OnVehicleCreated(ref vm);
+                    vm.UpdateVehicle();
                     base.Add(vm);
                 }
             }
