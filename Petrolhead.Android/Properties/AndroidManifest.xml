@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:theme="@style/AppTheme" package="Petrolhead.Android.Petrolhead" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="23" />
+	<uses-sdk android:minSdkVersion="17" android:targetSdkVersion="23" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="Petrolhead"></application>
+	<application android:label="Petrolhead Developer Preview" android:icon="@drawable/Icon"></application>
 </manifest>

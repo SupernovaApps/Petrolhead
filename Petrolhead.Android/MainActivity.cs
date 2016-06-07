@@ -14,7 +14,7 @@ using System.Linq;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Messenger = GalaSoft.MvvmLight.Messaging.Messenger;
-using AlertDialog = Android.Support.V7.App.AlertDialog;
+using AlertDialog = Android.App.AlertDialog;
 using System.Threading;
 using GalaSoft.MvvmLight.Messaging;
 using Android.Support.V7.Widget;
@@ -22,7 +22,7 @@ using static Android.Support.V7.Widget.Toolbar;
 
 namespace Petrolhead
 {
-    [Activity(Label = "Petrolhead", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme"
+    [Activity(Label = "Petrolhead Developer Preview", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppTheme"
         )]
     public class MainActivity : AppCompatActivity, IAuthenticator, IDialogHelper
     {
@@ -89,21 +89,25 @@ namespace Petrolhead
         {
             RunOnUiThread(() =>
             {
-                new Android.Support.V7.App.AlertDialog.Builder(this)
+                new AlertDialog.Builder(Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity)
                 .SetMessage(content)
                 .Show();
             });
+                
+           
         }
 
         public void ShowDialog(string content, string title)
         {
+
             RunOnUiThread(() =>
             {
-                new Android.Support.V7.App.AlertDialog.Builder(this)
-                .SetMessage(content)
-                .SetTitle(title)
-                .Show();
+                new AlertDialog.Builder(Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity)
+            .SetMessage(content)
+            .SetTitle(title)
+            .Show();
             });
+           
         }
 
         public void OnVehicleUpdated(ref VehicleViewModel vm)

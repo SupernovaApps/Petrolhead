@@ -36,6 +36,10 @@ namespace Petrolhead
                         {
                             DialogHelper.ShowDialog("The date of your next warrant cannot be earlier than the current date.", "Invalid Data");
                         }
+                        else
+                        {
+                            success = true;
+                        }
                     }
                 }
 
