@@ -27,7 +27,7 @@ namespace Petrolhead.ViewModels
             if (success)
             {
 
-                App.Current.MainPage = new NavigationPage(new Views.VehiclesPage());
+                App.Current.MainPage = new Views.VehiclesPage();
                 
             }
         }

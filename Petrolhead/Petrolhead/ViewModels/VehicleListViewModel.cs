@@ -55,28 +55,32 @@ namespace Petrolhead.ViewModels
 
         public VehicleViewModel SelectedVehicle { get { return _selectedVehicle; } set { Set(ref _selectedVehicle, value); } }
 
-        public async void AddVehicle(VehicleViewModel v)
+        public async Task AddVehicle(VehicleViewModel v)
         {
             Vehicles.Add(v);
 
-            if (v.Vehicle.Id == null)
-                await DataStore.Current.AddVehicleAsync(v);
+            await DataStore.Current.AddVehicleAsync(v);
+
+                   
             SelectedVehicle = v;
-            Sync();
+            await Sync();
            
         }
 
-        public async void RemoveVehicle(VehicleViewModel v)
+        public async Task RemoveVehicle(VehicleViewModel v)
         {
             int index = Vehicles.IndexOf(v);
             Vehicles.Remove(v);
-            SelectedVehicle = Vehicles.ElementAtOrDefault(index);
+
             await DataStore.Current.RemoveVehicleAsync(v);
-            Sync();
+            SelectedVehicle = Vehicles.ElementAtOrDefault(index);
+
+            
+            await Sync();
 
         }
 
-        public async void Sync()
+        public async Task Sync()
         {
             await DataStore.Current.SyncVehiclesAsync();
             Vehicles = new ObservableCollection<VehicleViewModel>((await DataStore.Current.GetVehiclesAsync()).Select<Models.Vehicle, VehicleViewModel>(x => x));

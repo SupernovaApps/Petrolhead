@@ -35,17 +35,21 @@ namespace Petrolhead.Views
 
             Master = masterPage;
 
-            if (Device.OS != TargetPlatform.Android)
-                Detail = new NavigationPage(new VehicleDetailsView(vm.SelectedVehicle));
-            else
-                Detail = new VehicleDetailsView(vm.SelectedVehicle);
+            Detail = new VehicleDetailsView(vm.SelectedVehicle);
 
-          
 
+
+
+            ToolbarItem addItem = new ToolbarItem();
+            addItem.Text = "Add";
+            addItem.Icon = Device.OnPlatform(default(string), "Resources/drawable/ic_add.png", "Assets/ic_add.png");
+            addItem.Clicked += AddItem_Clicked;
+            ToolbarItems.Add(addItem);
 
 
 
         }
+
 
         private async void AddItem_Clicked(object sender, EventArgs e)
         {
@@ -53,11 +57,13 @@ namespace Petrolhead.Views
 
             if (result == "Continue anyway")
             {
-
-                await App.Current.MainPage.Navigation.PushModalAsync(new VehicleEditorPage());
+                VehicleEditorPage page = new VehicleEditorPage();
+                  await App.Current.MainPage.Navigation.PushModalAsync(page);
 
             }
         }
+
+        
 
         private VehicleListViewModel _listModel = null;
         public VehicleListViewModel ListModel

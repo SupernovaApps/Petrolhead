@@ -42,13 +42,15 @@ namespace Petrolhead.Services
             throw new NotImplementedException();
         }
 
+        
         public async Task<bool> ValidateVehicleAsync(Vehicle vehicle)
         {
             bool success = false;
 
             if (string.IsNullOrWhiteSpace(vehicle.Name))
             {
-                await App.Current.MainPage.DisplayAlert("Invalid Data", "Your vehicle must have a name. How else will you tell it apart?", "OK");
+                
+
             }
 
             return success;

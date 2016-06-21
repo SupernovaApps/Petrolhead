@@ -57,7 +57,9 @@ namespace Petrolhead.ViewModels
         public static implicit operator VehicleViewModel(Vehicle lhs)
         {
             var vm = new VehicleViewModel(lhs);
-            ((App)Xamarin.Forms.Application.Current).OnVehicleCreated(ref vm);
+
+            if (((App)Xamarin.Forms.Application.Current).OnVehicleCreated != null)
+                ((App)Xamarin.Forms.Application.Current).OnVehicleCreated(ref vm);
             return vm;
         }
 

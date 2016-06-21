@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using Petrolhead.Models;
+using Petrolhead.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,11 @@ namespace Petrolhead.ViewModels
                 Vehicle = new Vehicle();
                 IsCreatorMode = true;
             }
+            else
+            {
+                Vehicle = v;
+                IsCreatorMode = false;
+            }
         }
 
 
@@ -42,5 +48,8 @@ namespace Petrolhead.ViewModels
 
         private Vehicle _vehicle = null;
         public Vehicle Vehicle { get { return _vehicle; } set { Set(ref _vehicle, value); } }
+
+        
+       
     }
 }
